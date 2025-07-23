@@ -1,0 +1,388 @@
+<!-- templates/bookings/booking_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Booking #{{ booking.booking_number }} | Wanderlust{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/booking_detail.css">
+{% endblock %}
+
+{% block content %}
+<!-- Booking Hero -->
+<section class="page-hero booking-detail-hero">
+    <div class="page-hero-content">
+        <h1 data-aos="fade-up">Booking Details</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Booking #{{ booking.booking_number }}</p>
+    </div>
+    <div class="page-hero-overlay"></div>
+</section>
+
+<!-- Booking Status -->
+<section class="booking-status-section py-4">
+    <div class="container">
+        <div class="booking-status-wrapper" data-aos="fade-up">
+            <div class="booking-status-bar">
+                <div
+                    class="status-item {% if booking.status == 'pending' or booking.status == 'confirmed' or booking.status == 'completed' %}active{% endif %}">
+                    <div class="status-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="status-text">Booking Received</div>
+                </div>
+                <div
+                    class="status-item {% if booking.status == 'confirmed' or booking.status == 'completed' %}active{% endif %}">
+                    <div class="status-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="status-text">Confirmed</div>
+                </div>
+                <div class="status-item {% if booking.status == 'completed' %}active{% endif %}">
+                    <div class="status-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="status-text">Completed</div>
+                </div>
+
+
+
+                
+                
+            </div>
+            <div class="current-status {{ booking.status }}">
+                Current Status: <span>{{ booking.get_status_display }}</span>
+                {% if booking.status == 'cancelled' %}
+                <i class="fas fa-times-circle"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Details -->
+<section class="booking-details-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Package Details -->
+                <div class="booking-detail-card" data-aos="fade-up">
+                    <div class="card-header">
+                        <h2>Tour Package</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="package-details">
+                            <div class="package-image">
+                                <img src="{{ booking.package.destination.main_image.url }}"
+                                    alt="{{ booking.package.name }}">
+                            </div>
+                            <div class="package-info">
+                                <h3>{{ booking.package.name }}</h3>
+                                <p class="destination">
+                                    <i class="fas fa-map-marker-alt"></i> {{ booking.package.destination.name }}, {{
+                                    booking.package.destination.country.name }}
+                                </p>
+                                <div class="package-meta">
+                                    <div class="meta-item">
+                                        <i class="far fa-calendar-alt"></i> <span>Duration:</span> {{
+                                        booking.package.duration }} Days
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-hiking"></i> <span>Difficulty:</span> {{
+                                        booking.package.get_difficulty_display }}
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-users"></i> <span>Max Group Size:</span> {{
+                                        booking.package.group_size }}
+                                    </div>
+                                </div>
+                                <a href="{% url 'package_detail' booking.package.slug %}"
+                                    class="btn btn-outline-primary mt-3">View Package Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Information -->
+                <div class="booking-detail-card mt-4" data-aos="fade-up">
+                    <div class="card-header">
+                        <h2>Booking Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="booking-info">
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="info-label">Booking Number:</span>
+                                    <span class="info-value">{{ booking.booking_number }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Booking Date:</span>
+                                    <span class="info-value">{{ booking.booking_date|date:"F d, Y H:i" }}</span>
+                                </div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="info-label">Travel Date:</span>
+                                    <span class="info-value">{{ booking.travel_date|date:"F d, Y" }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Number of Travelers:</span>
+                                    <span class="info-value">{{ booking.number_of_travelers }}</span>
+                                </div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="info-label">Status:</span>
+                                    <span class="info-value status-badge {{ booking.status }}">{{
+                                        booking.get_status_display }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Total Price:</span>
+                                    <span class="info-value price">${{ booking.total_price }}</span>
+                                </div>
+                            </div>
+                            {% if booking.special_requests %}
+                            <div class="info-group full-width">
+                                <div class="info-item">
+                                    <span class="info-label">Special Requests:</span>
+                                    <span class="info-value">{{ booking.special_requests }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Itinerary Summary -->
+                <div class="booking-detail-card mt-4" data-aos="fade-up">
+                    <div class="card-header">
+                        <h2>Itinerary Summary</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="itinerary-timeline">
+                            {% for day_itinerary in booking.package.itinerary.splitlines %}
+                            {% if day_itinerary %}
+                            {% with day_parts=day_itinerary.split:':' %}
+                            <div class="itinerary-day">
+                                <div class="day-header">
+                                    <div class="day-number">Day {{ forloop.counter }}</div>
+                                    <h3>{% if day_parts.1 %}{{ day_parts.0 }}{% else %}Day {{ forloop.counter }}{% endif
+                                        %}</h3>
+                                </div>
+                                <div class="day-content">
+                                    <p>{% if day_parts.1 %}{{ day_parts.1 }}{% else %}{{ day_parts.0 }}{% endif %}</p>
+                                </div>
+                            </div>
+                            {% endwith %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Information -->
+                {% if booking.payment %}
+                <div class="booking-detail-card mt-4" data-aos="fade-up">
+                    <div class="card-header">
+                        <h2>Payment Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="payment-info">
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="info-label">Payment Date:</span>
+                                    <span class="info-value">{{ booking.payment.payment_date|date:"F d, Y H:i" }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Payment Method:</span>
+                                    <span class="info-value">{{ booking.payment.get_payment_method_display }}</span>
+                                </div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="info-label">Transaction ID:</span>
+                                    <span class="info-value">{{ booking.payment.transaction_id }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Amount Paid:</span>
+                                    <span class="info-value price">${{ booking.payment.amount }}</span>
+                                </div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="info-label">Payment Status:</span>
+                                    <span
+                                        class="info-value status-badge {% if booking.payment.is_successful %}confirmed{% else %}pending{% endif %}">
+                                        {% if booking.payment.is_successful %}Successful{% else %}Failed{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Sidebar -->
+                <div class="booking-sidebar">
+                    <!-- Action Card -->
+                    <div class="sidebar-card" data-aos="fade-up">
+                        <div class="card-header">
+                            <h3>Booking Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="action-buttons">
+                                {% if booking.status == 'pending' %}
+                                <a href="#" class="btn btn-primary w-100 mb-3">Complete Payment</a>
+                                <a href="#" class="btn btn-outline-secondary w-100 mb-3">Modify Booking</a>
+                                <button class="btn btn-danger w-100" data-bs-toggle="modal"
+                                    data-bs-target="#cancelModal">Cancel Booking</button>
+                                {% elif booking.status == 'confirmed' %}
+                                <a href="#" class="btn btn-primary w-100 mb-3">Download Voucher</a>
+                                <a href="#" class="btn btn-outline-primary w-100 mb-3">Print Itinerary</a>
+                                {% if booking.travel_date > now %}
+                                <button class="btn btn-danger w-100" data-bs-toggle="modal"
+                                    data-bs-target="#cancelModal">Cancel Booking</button>
+                                {% endif %}
+                                {% elif booking.status == 'completed' %}
+                                <a href="#" class="btn btn-primary w-100 mb-3">Write a Review</a>
+                                <a href="#" class="btn btn-outline-primary w-100">Download Invoice</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Support -->
+                    <div class="sidebar-card mt-4" data-aos="fade-up">
+                        <div class="card-header">
+                            <h3>Need Help?</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>If you have any questions or need assistance with your booking, our customer support team
+                                is here to help.</p>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+1 (123) 456-7890</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>support@wanderlust.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-comment"></i>
+                                    <span>Live Chat (9 AM - 6 PM EST)</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'contact' %}" class="btn btn-outline-primary w-100 mt-3">Contact Support</a>
+                        </div>
+                    </div>
+
+                    <!-- Travel Tips -->
+                    <div class="sidebar-card mt-4" data-aos="fade-up">
+                        <div class="card-header">
+                            <h3>Travel Tips</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="travel-tips">
+                                <div class="tip-item">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-passport"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>Travel Documents</h4>
+                                        <p>Ensure your passport is valid for at least 6 months beyond your travel dates.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="tip-item">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-suitcase"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>Packing</h4>
+                                        <p>Check the weather forecast and pack appropriate clothing for your
+                                            destination.</p>
+                                    </div>
+                                </div>
+                                <div class="tip-item">
+                                    <div class="tip-icon">
+                                        <i class="fas fa-medkit"></i>
+                                    </div>
+                                    <div class="tip-content">
+                                        <h4>Health</h4>
+                                        <p>Carry any necessary medications and check if vaccinations are required.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-link w-100 mt-2">View Complete Travel Guide</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cancellation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cancel Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel your booking for <strong>{{ booking.package.name }}</strong>?</p>
+
+                <div class="cancellation-policy">
+                    <h6>Cancellation Policy:</h6>
+                    <ul>
+                        <li>60+ days before departure: Full refund</li>
+                        <li>30-59 days before departure: 50% refund</li>
+                        <li>Less than 30 days before departure: No refund</li>
+                    </ul>
+
+                    {% if booking.travel_date|timeuntil:now > '60 days' %}
+                    <div class="refund-info success">
+                        <i class="fas fa-check-circle"></i> You are eligible for a full refund.
+                    </div>
+                    {% elif booking.travel_date|timeuntil:now > '30 days' %}
+                    <div class="refund-info warning">
+                        <i class="fas fa-exclamation-circle"></i> You are eligible for a 50% refund.
+                    </div>
+                    {% else %}
+                    <div class="refund-info danger">
+                        <i class="fas fa-times-circle"></i> You are not eligible for a refund.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="cancellationReason" class="form-label">Reason for Cancellation:</label>
+                    <select class="form-select" id="cancellationReason" required>
+                        <option value="">-- Select a reason --</option>
+                        <option value="change_plans">Change of Plans</option>
+                        <option value="emergency">Personal Emergency</option>
+                        <option value="health">Health Issues</option>
+                        <option value="work">Work Commitments</option>
+                        <option value="booking_error">Booking Error</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="cancellationDetails" class="form-label">Additional Details (Optional):</label>
+                    <textarea class="form-control" id="cancellationDetails" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                <button type="button" class="btn btn-danger">Confirm Cancellation</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/booking_detail.js"></script>
+{% endblock %}

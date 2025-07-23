@@ -1,0 +1,254 @@
+<!-- templates/bookings/booking_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}My Bookings | Wanderlust{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/bookings.css">
+{% endblock %}
+
+{% block content %}
+<!-- Bookings Hero -->
+<section class="page-hero bookings-hero">
+    <div class="page-hero-content">
+        <h1 data-aos="fade-up">My Bookings</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Manage your travel plans in one place</p>
+    </div>
+    <div class="page-hero-overlay"></div>
+</section>
+
+<!-- Bookings List -->
+<section class="bookings-list py-5">
+    <div class="container">
+        <div class="booking-filters mb-4" data-aos="fade-up">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2>Your Travel Plans</h2>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="filterDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-filter"></i> Filter Bookings
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                            <li><a class="dropdown-item" href="?status=all">All Bookings</a></li>
+                            <li><a class="dropdown-item" href="?status=upcoming">Upcoming Trips</a></li>
+                            <li><a class="dropdown-item" href="?status=past">Past Trips</a></li>
+                            <li><a class="dropdown-item" href="?status=cancelled">Cancelled</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if bookings %}
+        <div class="bookings-container" data-aos="fade-up">
+            {% for booking in bookings %}
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="booking-status {{ booking.status }}">
+                        {{ booking.get_status_display }}
+                    </div>
+                    <div class="booking-number">
+                        Booking #{{ booking.booking_number }}
+                    </div>
+                </div>
+                <div class="booking-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="booking-image">
+                                <img src="{{ booking.package.destination.main_image.url }}"
+                                    alt="{{ booking.package.name }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="booking-details">
+                                <h3>{{ booking.package.name }}</h3>
+                                <p class="booking-destination">
+                                    <i class="fas fa-map-marker-alt"></i> {{ booking.package.destination.name }}, {{
+                                    booking.package.destination.country.name }}
+                                </p>
+                                <div class="booking-meta">
+                                    <div class="meta-item">
+                                        <i class="far fa-calendar-alt"></i> <span>Travel Date:</span> {{
+                                        booking.travel_date|date:"F d, Y" }}
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-users"></i> <span>Travelers:</span> {{
+                                        booking.number_of_travelers }}
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="far fa-clock"></i> <span>Duration:</span> {{ booking.package.duration
+                                        }} Days
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="booking-price-actions">
+                                <div class="booking-price">
+                                    <span class="price-label">Total Price:</span>
+                                    <span class="price-amount">${{ booking.total_price }}</span>
+                                </div>
+                                <div class="booking-actions">
+                                    <a href="{% url 'booking_detail' booking.id %}"
+                                        class="btn btn-outline-primary btn-sm">View Details</a>
+                                    {% if booking.status == 'pending' %}
+                                    <a href="#" class="btn btn-danger btn-sm mt-2">Cancel</a>
+                                    {% elif booking.status == 'confirmed' and booking.travel_date > now %}
+                                    <a href="#" class="btn btn-secondary btn-sm mt-2">Modify</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination-container mt-4" data-aos="fade-up">
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{
+                            num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="no-bookings text-center" data-aos="fade-up">
+            <div class="no-bookings-icon">
+                <i class="far fa-calendar-times"></i>
+            </div>
+            <h3>No Bookings Found</h3>
+            <p>You haven't made any bookings yet. Start planning your next adventure!</p>
+            <a href="{% url 'destination_list' %}" class="btn btn-primary mt-3">Explore Destinations</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Recommended Packages -->
+<section class="recommended-packages py-5 bg-light">
+    <div class="container">
+        <div class="section-header text-center mb-4">
+            <h2 data-aos="fade-up">Recommended For You</h2>
+            <p data-aos="fade-up">Based on your travel preferences</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <div class="package-card">
+                    <div class="package-image">
+                        <img src="https://source.unsplash.com/random/600x400/?bali" alt="Bali Retreat">
+                        <div class="package-discount">20% OFF</div>
+                    </div>
+                    <div class="package-content">
+                        <h3>Bali Retreat</h3>
+                        <div class="package-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Bali, Indonesia</span>
+                            <span><i class="far fa-calendar-alt"></i> 7 Days</span>
+                        </div>
+                        <p>Experience the perfect blend of relaxation and adventure in beautiful Bali.</p>
+                        <div class="package-footer">
+                            <div class="package-price">
+                                <span class="old-price">$1,299</span>
+                                <span class="current-price">$1,039</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="package-card">
+                    <div class="package-image">
+                        <img src="https://source.unsplash.com/random/600x400/?japan" alt="Japan Explorer">
+                    </div>
+                    <div class="package-content">
+                        <h3>Japan Explorer</h3>
+                        <div class="package-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Japan</span>
+                            <span><i class="far fa-calendar-alt"></i> 10 Days</span>
+                        </div>
+                        <p>Discover the perfect blend of ancient traditions and modern wonders in Japan.</p>
+                        <div class="package-footer">
+                            <div class="package-price">
+                                <span class="current-price">$2,499</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="package-card">
+                    <div class="package-image">
+                        <img src="https://source.unsplash.com/random/600x400/?greece" alt="Greek Islands Cruise">
+                        <div class="package-discount">15% OFF</div>
+                    </div>
+                    <div class="package-content">
+                        <h3>Greek Islands Cruise</h3>
+                        <div class="package-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Greece</span>
+                            <span><i class="far fa-calendar-alt"></i> 8 Days</span>
+                        </div>
+                        <p>Island hop through the stunning Greek isles and experience Mediterranean bliss.</p>
+                        <div class="package-footer">
+                            <div class="package-price">
+                                <span class="old-price">$1,899</span>
+                                <span class="current-price">$1,614</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/bookings.js"></script>
+{% endblock %}

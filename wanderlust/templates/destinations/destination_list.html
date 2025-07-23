@@ -1,0 +1,164 @@
+<!-- templates/destinations/destination_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Explore Destinations | Wanderlust{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/destinations.css">
+{% endblock %}
+
+{% block content %}
+<!-- Destinations Hero -->
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1 data-aos="fade-up">Explore Amazing Destinations</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Discover breathtaking places around the world</p>
+    </div>
+    <div class="page-hero-overlay"></div>
+</section>
+
+<!-- Destinations Filters -->
+<section class="filters py-4">
+    <div class="container">
+        <div class="filter-wrapper" data-aos="fade-up">
+            <form method="get" class="filter-form">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <select name="continent" class="form-select">
+                            <option value="">All Continents</option>
+                            {% for continent in continents %}
+                            <option value="{{ continent.slug }}" {% if request.GET.continent==continent.slug
+                                %}selected{% endif %}>{{ continent.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="country" class="form-select">
+                            <option value="">All Countries</option>
+                            <!-- Countries will be populated via JS based on continent -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">Filter Results</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Destinations List -->
+<section class="destinations-list py-5">
+    <div class="container">
+        {% if destinations %}
+        <div class="row">
+            {% for destination in destinations %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|multiply:100 }}">
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ destination.main_image.url }}" alt="{{ destination.name }}">
+                        {% if destination.featured %}
+                        <div class="destination-badge">Featured</div>
+                        {% elif destination.popular %}
+                        <div class="destination-badge">Popular</div>
+                        {% endif %}
+                    </div>
+                    <div class="destination-content">
+                        <h3>{{ destination.name }}</h3>
+                        <div class="destination-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> {{ destination.country.name }}</span>
+                            <span><i class="fas fa-star"></i> {{ destination.reviews.count }}</span>
+                        </div>
+                        <p>{{ destination.description|truncatechars:100 }}</p>
+                        <a href="{% url 'destination_detail' destination.slug %}"
+                            class="btn btn-outline-primary">Explore More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination-container" data-aos="fade-up">
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}{% if request.GET.continent %}&continent={{ request.GET.continent }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ num }}{% if request.GET.continent %}&continent={{ request.GET.continent }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}">{{
+                            num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}{% if request.GET.continent %}&continent={{ request.GET.continent }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="no-results text-center" data-aos="fade-up">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>No destinations found</h3>
+            <p>Try adjusting your search criteria or explore our featured destinations.</p>
+            <a href="{% url 'destination_list' %}" class="btn btn-primary mt-3">Reset Filters</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter py-5">
+    <div class="container">
+        <div class="newsletter-content" data-aos="fade-up">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h3>Get Travel Inspiration</h3>
+                    <p>Subscribe to our newsletter for exclusive deals and destination guides.</p>
+                </div>
+                <div class="col-lg-6">
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your Email Address">
+                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/destinations.js"></script>
+{% endblock %}

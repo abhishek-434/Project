@@ -1,0 +1,505 @@
+/* static/css/destination_detail.css */
+/* Hero Section */
+.destination-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+}
+
+.destination-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.destination-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.destination-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.destination-hero p {
+    font-size: 1.25rem;
+    margin-bottom: 0;
+}
+
+.destination-hero p i {
+    margin-right: 5px;
+}
+
+/* Destination Info Section */
+.destination-section {
+    margin-bottom: 50px;
+}
+
+.destination-section h2 {
+    position: relative;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    font-size: 2rem;
+}
+
+.destination-section h2:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+.destination-description {
+    line-height: 1.8;
+}
+
+/* Highlights */
+.highlights-list {
+    margin-top: 20px;
+}
+
+.highlight-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.highlight-icon {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-right: 15px;
+}
+
+.highlight-text {
+    flex: 1;
+}
+
+/* Gallery */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+}
+
+.gallery-item {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Package Cards */
+.package-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.package-info {
+    padding: 25px;
+}
+
+.package-info h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.package-meta {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.package-meta span {
+    margin-right: 20px;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.package-meta i {
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.package-price {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+}
+
+.current-price {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.price-unit {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.package-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Reviews */
+.reviews-container {
+    margin-top: 20px;
+}
+
+.review-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+}
+
+.reviewer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.reviewer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reviewer-name h5 {
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.review-date {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.review-rating {
+    color: #ffc107;
+}
+
+.review-content h4 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.review-content p {
+    color: #555;
+}
+
+/* Rating Select in Modal */
+.rating-select .stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating-select input {
+    display: none;
+}
+
+.rating-select label {
+    font-size: 25px;
+    color: #ddd;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.rating-select label:hover,
+.rating-select label:hover~label,
+.rating-select input:checked~label {
+    color: #ffc107;
+}
+
+/* Sidebar */
+.destination-sidebar {
+    position: sticky;
+    top: 100px;
+}
+
+.sidebar-widget {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.sidebar-widget h3 {
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.sidebar-widget h3:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+/* Map */
+.map-container {
+    height: 250px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Weather */
+.current-weather {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.weather-icon {
+    font-size: 2.5rem;
+    color: #ffc107;
+    margin-right: 20px;
+}
+
+.temperature {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.weather-description {
+    color: #666;
+}
+
+.weather-forecast {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-day {
+    text-align: center;
+}
+
+.day-name {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.day-icon {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #ffc107;
+}
+
+.day-temp {
+    font-weight: 700;
+}
+
+/* Best Time to Visit */
+.season-months {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 5px;
+    margin-top: 15px;
+}
+
+.month-item {
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    background: #f5f5f5;
+    font-size: 0.8rem;
+}
+
+.month-item.active {
+    background: #e0f7fa;
+    color: #0097a7;
+}
+
+.month-item.best {
+    background: #e8f5e9;
+    color: #388e3c;
+    font-weight: 700;
+}
+
+/* Related Destinations */
+.related-destination-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.related-destination-item:last-child {
+    border-bottom: none;
+}
+
+.related-destination-item:hover {
+    transform: translateX(5px);
+}
+
+.related-destination-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.related-destination-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.related-destination-info h4 {
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.related-destination-info p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Need Help Widget */
+.need-help-widget {
+    background: linear-gradient(to right, var(--primary-color), #5c6bc0);
+    color: white;
+}
+
+.need-help-widget h3 {
+    color: white;
+}
+
+.need-help-widget h3:after {
+    background-color: white;
+}
+
+.contact-info {
+    margin-top: 20px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.contact-item i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Media Queries */
+@media (max-width: 991.98px) {
+    .destination-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .gallery-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .destination-sidebar {
+        margin-top: 50px;
+        position: static;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .destination-hero {
+        height: 40vh;
+    }
+
+    .destination-hero h1 {
+        font-size: 2rem;
+    }
+
+    .destination-hero p {
+        font-size: 1rem;
+    }
+
+    .gallery-container {
+        grid-template-columns: 1fr;
+    }
+
+    .package-actions {
+        flex-direction: column;
+    }
+
+    .package-actions .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

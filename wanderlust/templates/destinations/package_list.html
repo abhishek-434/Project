@@ -1,0 +1,192 @@
+<!-- templates/destinations/package_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Tour Packages | Wanderlust{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/packages.css">
+{% endblock %}
+
+{% block content %}
+<!-- Packages Hero -->
+<section class="page-hero packages-hero">
+    <div class="page-hero-content">
+        <h1 data-aos="fade-up">Discover Our Tour Packages</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Expertly crafted travel experiences for unforgettable adventures</p>
+    </div>
+    <div class="page-hero-overlay"></div>
+</section>
+
+<!-- Packages Filters -->
+<section class="filters py-4">
+    <div class="container">
+        <div class="filter-wrapper" data-aos="fade-up">
+            <form method="get" class="filter-form">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <select name="destination" class="form-select">
+                            <option value="">All Destinations</option>
+                            <!-- Destinations would be populated here -->
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="duration" class="form-select">
+                            <option value="">Any Duration</option>
+                            <option value="1-3">1-3 Days</option>
+                            <option value="4-7">4-7 Days</option>
+                            <option value="8-14">8-14 Days</option>
+                            <option value="15+">15+ Days</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="price" class="form-select">
+                            <option value="">Any Price</option>
+                            <option value="budget">Budget (< $1000)</option>
+                            <option value="standard">Standard ($1000-$2500)</option>
+                            <option value="luxury">Luxury (> $2500)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Filter Results</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Packages List -->
+<section class="packages-list py-5">
+    <div class="container">
+        {% if packages %}
+        <div class="row">
+            {% for package in packages %}
+            <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|multiply:100 }}">
+                <div class="package-card">
+                    <div class="package-image">
+                        <img src="{{ package.destination.main_image.url }}" alt="{{ package.name }}">
+                        {% if package.featured %}
+                        <div class="package-badge">Featured</div>
+                        {% endif %}
+                        {% if package.discount_price %}
+                        <div class="package-discount">
+                            {{ package.discount_percentage }}% OFF
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="package-content">
+                        <h3>{{ package.name }}</h3>
+                        <div class="package-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> {{ package.destination.name }}</span>
+                            <span><i class="far fa-calendar-alt"></i> {{ package.duration }} Days</span>
+                            <span><i class="fas fa-users"></i> Max: {{ package.group_size }}</span>
+                        </div>
+                        <div class="package-rating">
+                            {% for i in "12345" %}
+                            <i class="fas fa-star"></i>
+                            {% endfor %}
+                            <span>({{ package.reviews.count }})</span>
+                        </div>
+                        <p>{{ package.description|truncatechars:150 }}</p>
+                        <div class="package-footer">
+                            <div class="package-price">
+                                {% if package.discount_price %}
+                                <span class="old-price">${{ package.price }}</span>
+                                <span class="current-price">${{ package.discount_price }}</span>
+                                {% else %}
+                                <span class="current-price">${{ package.price }}</span>
+                                {% endif %}
+                                <span class="price-unit">/ person</span>
+                            </div>
+                            <div class="package-actions">
+                                <a href="{% url 'package_detail' package.slug %}" class="btn btn-outline-primary">View
+                                    Details</a>
+                                <a href="{% url 'create_booking' package.slug %}" class="btn btn-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination-container" data-aos="fade-up">
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}{% if request.GET.destination %}&destination={{ request.GET.destination }}{% endif %}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ num }}{% if request.GET.destination %}&destination={{ request.GET.destination }}{% endif %}">{{
+                            num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}{% if request.GET.destination %}&destination={{ request.GET.destination }}{% endif %}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="no-results text-center" data-aos="fade-up">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>No packages found</h3>
+            <p>Try adjusting your search criteria or explore our featured packages.</p>
+            <a href="{% url 'package_list' %}" class="btn btn-primary mt-3">Reset Filters</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="cta-content" data-aos="fade-up">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2>Need a Custom Travel Package?</h2>
+                    <p>Our travel experts can create a personalized itinerary just for you. Tell us your preferences,
+                        and we'll design your dream vacation.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'contact' %}" class="btn btn-light btn-lg">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/packages.js"></script>
+{% endblock %}
