@@ -225,11 +225,11 @@ body {
 .footer {
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
     padding: 3rem 0 1rem;
-    margin-top: 4rem;
+    margin-top: 1px;
 }
 
 .footer-title {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
     font-family: 'Dancing Script', cursive;
 }
@@ -242,7 +242,7 @@ body {
 
 .footer-text {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     line-height: 1.6;
 }
 
