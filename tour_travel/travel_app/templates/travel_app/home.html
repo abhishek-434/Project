@@ -1,0 +1,467 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}Wanderlust Adventures - Discover Your Next Journey{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/home.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-background">
+        <div class="hero-overlay"></div>
+        <div class="floating-elements">
+            <div class="float-element float-1"></div>
+            <div class="float-element float-2"></div>
+            <div class="float-element float-3"></div>
+            <div class="float-element float-4"></div>
+        </div>
+    </div>
+
+    <div class="container hero-content">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-text animate-on-scroll">
+                    <h1 class="hero-title">
+                        <span class="hero-subtitle">Discover</span>
+                        <span class="hero-main">Amazing</span>
+                        <span class="hero-accent">Adventures</span>
+                    </h1>
+                    <p class="hero-description">
+                        Embark on extraordinary journeys to breathtaking destinations around the globe.
+                        Create memories that will last a lifetime with our carefully curated travel experiences.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-compass me-2"></i>Explore Packages
+                        </a>
+                        <a href="#" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-map-marked-alt me-2"></i>View Destinations
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image animate-on-scroll">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Adventure Travel" class="img-fluid">
+                        <div class="image-overlay">
+                            <div class="stats-card">
+                                <h4>1000+</h4>
+                                <p>Happy Travelers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section">
+    <div class="container">
+        <div class="search-card glass-effect">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <form method="GET" action="#" class="search-form">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <div class="search-input-wrapper">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text" class="form-control search-input" name="q"
+                                        placeholder="Where do you want to go?">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100 search-btn">
+                                    <i class="fas fa-paper-plane me-2"></i>Find Adventures
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Destinations -->
+<section class="featured-destinations py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header animate-on-scroll">
+                    <h2 class="section-title">
+                        <span class="title-accent">Featured</span> Destinations
+                    </h2>
+                    <p class="section-subtitle">Discover the world's most breathtaking locations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="destination-card animate-on-scroll">
+                    <div class="card-image">
+                        <img src="{% if destination.image %}{{ destination.image.url }}{% else %}https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                            alt="{{ destination.name }}" class="img-fluid">
+                        <div class="card-overlay">
+                            <div class="overlay-content">
+                                <h4 class="destination-name">{{ destination.name }}</h4>
+                                <p class="destination-country">
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ destination.country }}
+                                </p>
+                                <a href="#" class="btn btn-light btn-sm">
+                                    Explore <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-12 text-center">
+                <p class="text-muted">No featured destinations available at the moment.</p>
+            </div>
+           
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-outline-primary btn-lg">
+                View All Destinations <i class="fas fa-globe ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Packages -->
+<section class="featured-packages py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header animate-on-scroll">
+                    <h2 class="section-title">
+                        <span class="title-accent">Featured</span> Packages
+                    </h2>
+                    <p class="section-subtitle">Handpicked adventures for every type of traveler</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+          
+            <div class="col-lg-6">
+                <div class="package-card animate-on-scroll">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="package-image">
+                                <img src="{% if package.image %}{{ package.image.url }}{% else %}https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                                    alt="{{ package.title }}" class="img-fluid">
+                                <div class="package-badge">
+                                    <span class="badge bg-primary">{{ package.duration_days }} Days</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="package-content">
+                                <h4 class="package-title">{{ package.title }}</h4>
+                                <p class="package-destination">
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ package.destination.name }}
+                                </p>
+                                <p class="package-description">{{ package.description|truncatewords:15 }}</p>
+                                <div class="package-features">
+                                    <span class="feature-item">
+                                        <i class="fas fa-users me-1"></i>Max {{ package.max_people }} people
+                                    </span>
+                                    <span class="feature-item">
+                                        <i class="fas fa-signal me-1"></i>{{ package.get_difficulty_display }}
+                                    </span>
+                                </div>
+                                <div class="package-footer">
+                                    <div class="package-price">
+                                        <span class="price-label">From</span>
+                                        <span class="price-value">${{ package.price }}</span>
+                                    </div>
+                                    <a href="#" class="btn btn-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-12 text-center">
+                <p class="text-muted">No featured packages available at the moment.</p>
+            </div>
+          
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary btn-lg">
+                View All Packages <i class="fas fa-suitcase-rolling ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="why-choose-us py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header animate-on-scroll">
+                    <h2 class="section-title">
+                        Why Choose <span class="title-accent">Wanderlust</span>
+                    </h2>
+                    <p class="section-subtitle">Experience the difference with our premium travel services</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h4 class="feature-title">Expert Guidance</h4>
+                    <p class="feature-description">Our experienced travel experts provide personalized recommendations
+                        to make your journey unforgettable.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="feature-title">Safe & Secure</h4>
+                    <p class="feature-description">Your safety is our priority. We ensure secure bookings and provide
+                        24/7 support during your travels.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h4 class="feature-title">Best Prices</h4>
+                    <p class="feature-description">Get the best value for your money with our competitive pricing and
+                        exclusive deals.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4 class="feature-title">24/7 Support</h4>
+                    <p class="feature-description">Round-the-clock customer support to assist you before, during, and
+                        after your journey.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4 class="feature-title">Memorable Experiences</h4>
+                    <p class="feature-description">We create unique, authentic experiences that connect you with local
+                        cultures and communities.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4 class="feature-title">Eco-Friendly</h4>
+                    <p class="feature-description">Committed to sustainable tourism practices that protect our planet
+                        for future generations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Packages -->
+<section class="latest-packages py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header animate-on-scroll">
+                    <h2 class="section-title">
+                        <span class="title-accent">Latest</span> Adventures
+                    </h2>
+                    <p class="section-subtitle">Discover our newest travel packages and destinations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+         
+            <div class="col-lg-4 col-md-6">
+                <div class="card package-card-simple animate-on-scroll">
+                    <div class="card-image-wrapper">
+                        <img src="{% if package.image %}{{ package.image.url }}{% else %}https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                            alt="{{ package.title }}" class="card-img-top">
+                        <div class="card-badge">
+                            <span class="badge bg-success">New</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ package.title }}</h5>
+                        <p class="card-text text-muted">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ package.destination.name }}
+                        </p>
+                        <p class="card-text">{{ package.description|truncatewords:12 }}</p>
+                        <div class="card-meta">
+                            <div class="duration">
+                                <i class="fas fa-calendar-alt me-1"></i>{{ package.duration_days }} days
+                            </div>
+                            <div class="price">
+                                <span class="price-value">${{ package.price }}</span>
+                            </div>
+                        </div>
+                        <a href="#"" class="btn btn-primary w-100 mt-3">
+                            View Package
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 text-center">
+                <p class="text-muted">No packages available at the moment.</p>
+            </div>
+         
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header animate-on-scroll">
+                    <h2 class="section-title">
+                        What Our <span class="title-accent">Travelers</span> Say
+                    </h2>
+                    <p class="section-subtitle">Real experiences from our happy customers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b4db?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                alt="Sarah Johnson">
+                        </div>
+                        <div class="testimonial-info">
+                            <h5 class="testimonial-name">Sarah Johnson</h5>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Amazing experience! The team at Wanderlust made our honeymoon to Bali
+                        absolutely perfect. Every detail was taken care of."</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                alt="Mike Chen">
+                        </div>
+                        <div class="testimonial-info">
+                            <h5 class="testimonial-name">Mike Chen</h5>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The Nepal trekking package was incredible! Professional guides,
+                        stunning views, and memories that will last a lifetime."</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                alt="Emma Davis">
+                        </div>
+                        <div class="testimonial-info">
+                            <h5 class="testimonial-name">Emma Davis</h5>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Outstanding service from start to finish. Our European tour was
+                        perfectly organized and exceeded all expectations!"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-background">
+        <div class="cta-overlay"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="cta-content animate-on-scroll">
+                    <h2 class="cta-title">Ready for Your Next Adventure?</h2>
+                    <p class="cta-subtitle">Join thousands of happy travelers and discover your dream destination today!
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-rocket me-2"></i>Start Your Journey
+                        </a>
+                        <a href="#" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-phone me-2"></i>Get in Touch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
