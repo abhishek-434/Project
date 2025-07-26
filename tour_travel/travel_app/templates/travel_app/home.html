@@ -110,7 +110,7 @@
         </div>
 
         <div class="row g-4">
-            
+            {% for destination in featured_destinations %}
             <div class="col-lg-4 col-md-6">
                 <div class="destination-card animate-on-scroll">
                     <div class="card-image">
@@ -130,11 +130,11 @@
                     </div>
                 </div>
             </div>
-           
+            {% empty %}
             <div class="col-12 text-center">
                 <p class="text-muted">No featured destinations available at the moment.</p>
             </div>
-           
+            {% endfor %}
         </div>
 
         <div class="text-center mt-5">
@@ -160,7 +160,7 @@
         </div>
 
         <div class="row g-4">
-          
+            {% for package in featured_packages %}
             <div class="col-lg-6">
                 <div class="package-card animate-on-scroll">
                     <div class="row g-0">
@@ -191,7 +191,7 @@
                                 <div class="package-footer">
                                     <div class="package-price">
                                         <span class="price-label">From</span>
-                                        <span class="price-value">${{ package.price }}</span>
+                                        <span class="price-value">₹{{ package.price }}</span>
                                     </div>
                                     <a href="#" class="btn btn-primary btn-sm">
                                         View Details
@@ -202,11 +202,11 @@
                     </div>
                 </div>
             </div>
-           
+            {% empty %}
             <div class="col-12 text-center">
                 <p class="text-muted">No featured packages available at the moment.</p>
             </div>
-          
+            {% endfor %}
         </div>
 
         <div class="text-center mt-5">
@@ -311,7 +311,7 @@
         </div>
 
         <div class="row g-4">
-         
+            {% for package in latest_packages %}
             <div class="col-lg-4 col-md-6">
                 <div class="card package-card-simple animate-on-scroll">
                     <div class="card-image-wrapper">
@@ -332,20 +332,20 @@
                                 <i class="fas fa-calendar-alt me-1"></i>{{ package.duration_days }} days
                             </div>
                             <div class="price">
-                                <span class="price-value">${{ package.price }}</span>
+                                <span class="price-value">₹{{ package.price }}</span>
                             </div>
                         </div>
-                        <a href="#"" class="btn btn-primary w-100 mt-3">
+                        <a href="#"" class=" btn btn-primary w-100 mt-3">
                             View Package
                         </a>
                     </div>
                 </div>
             </div>
-            
+            {% empty %}
             <div class="col-12 text-center">
                 <p class="text-muted">No packages available at the moment.</p>
             </div>
-         
+            {% endfor %}
         </div>
     </div>
 </section>
