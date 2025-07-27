@@ -1,0 +1,480 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}Tour Packages - Wanderlust Adventures{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/package.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="packages-hero">
+    <div class="hero-background">
+        <div class="hero-overlay"></div>
+        <div class="floating-icons">
+            <div class="float-icon icon-1"><i class="fas fa-plane"></i></div>
+            <div class="float-icon icon-2"><i class="fas fa-mountain"></i></div>
+            <div class="float-icon icon-3"><i class="fas fa-compass"></i></div>
+            <div class="float-icon icon-4"><i class="fas fa-camera"></i></div>
+            <div class="float-icon icon-5"><i class="fas fa-map"></i></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="title-line">Discover Our</span>
+                        <span class="title-main">Adventure Packages</span>
+                    </h1>
+                    <p class="hero-subtitle">Carefully crafted experiences for every type of traveler</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="filter-section">
+    <div class="container">
+        <div class="filter-card">
+            <form method="GET" class="filter-form">
+                <div class="row g-3">
+                    <div class="col-lg-4 col-md-6">
+                        <label class="form-label">Search Packages</label>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="form-control" name="search" value="{{ search_query }}"
+                                placeholder="Search packages...">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="form-label">Min Price ($)</label>
+                        <input type="number" class="form-control" name="min_price" value="{{ min_price }}"
+                            placeholder="0" min="0">
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="form-label">Max Price ($)</label>
+                        <input type="number" class="form-control" name="max_price" value="{{ max_price }}"
+                            placeholder="10000" min="0">
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <div class="filter-buttons">
+                            <button type="submit" class="btn btn-primary w-100 mb-2">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                            <a href="{% url 'packages' %}" class="btn btn-outline-secondary w-100">
+                                <i class="fas fa-times me-2"></i>Clear
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Packages Grid -->
+<section class="packages-grid py-5">
+    <div class="container">
+        {% if search_query or difficulty or min_price or max_price %}
+        <div class="filter-results-header mb-4">
+            <h3 class="results-title">Filter Results</h3>
+            <div class="active-filters">
+                {% if search_query %}
+                <span class="filter-tag">Search: "{{ search_query }}"</span>
+                {% endif %}
+                {% if difficulty %}
+                <span class="filter-tag">Difficulty: {{ difficulty|title }}</span>
+                {% endif %}
+                {% if min_price %}
+                <span class="filter-tag">Min: ${{ min_price }}</span>
+                {% endif %}
+                {% if max_price %}
+                <span class="filter-tag">Max: ${{ max_price }}</span>
+                {% endif %}
+            </div>
+            <p class="results-count">{{ packages|length }} package{{ packages|length|pluralize }} found</p>
+        </div>
+        {% endif %}
+
+        <div class="row g-4" id="packagesGrid">
+            {% for package in packages %}
+            <div class="col-lg-4 col-md-6 package-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}">
+                <div class="package-card">
+                    <div class="card-header">
+                        <div class="package-image">
+                            <img src="{% if package.image %}{{ package.image.url }}{% else %}https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                                alt="{{ package.title }}" class="img-fluid">
+                            <div class="image-overlay">
+                                <div class="overlay-badges">
+                                    <span class="duration-badge">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span>{{ package.duration_days }} Days</span>
+                                    </span>
+                                    <span class="difficulty-badge difficulty-{{ package.difficulty }}">
+                                        <i class="fas fa-signal"></i>
+                                        <span>{{ package.get_difficulty_display }}</span>
+                                    </span>
+                                </div>
+                                <div class="overlay-actions">
+                                    <a href="#" class="view-detail-btn">
+                                        <i class="fas fa-eye"></i>
+                                        <span>View Details</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if package.featured %}
+                        <div class="featured-badge">
+                            <i class="fas fa-star"></i>
+                            <span>Featured</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body">
+                        <div class="package-header">
+                            <h4 class="package-title">{{ package.title }}</h4>
+                            <div class="package-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ package.destination.name }}, {{ package.destination.country }}</span>
+                            </div>
+                        </div>
+
+                        <p class="package-description">{{ package.description|truncatewords:15 }}</p>
+
+                        <div class="package-features">
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Max {{ package.max_people }} people</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ package.duration_days }} days</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="package-footer">
+                            <div class="price-section">
+                                <span class="price-label">Starting from</span>
+                                <div class="price-value">
+                                    <span class="currency">$</span>
+                                    <span class="amount">{{ package.price }}</span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="#" class="btn btn-primary book-btn">
+                                    <i class="fas fa-calendar-check me-2"></i>Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="no-packages">
+                    <div class="no-packages-icon">
+                        <i class="fas fa-suitcase-rolling"></i>
+                    </div>
+                    <h3 class="no-packages-title">
+                        {% if search_query or difficulty or min_price or max_price %}
+                        No packages match your criteria
+                        {% else %}
+                        No packages available
+                        {% endif %}
+                    </h3>
+                    <p class="no-packages-text">
+                        {% if search_query or difficulty or min_price or max_price %}
+                        Try adjusting your filters or browse all packages
+                        {% else %}
+                        Check back soon for exciting new travel packages!
+                        {% endif %}
+                    </p>
+                    {% if search_query or difficulty or min_price or max_price %}
+                    <a href="{% url 'packages' %}" class="btn btn-primary">
+                        <i class="fas fa-globe me-2"></i>View All Packages
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if packages.has_other_pages %}
+        <div class="pagination-wrapper mt-5">
+            <nav aria-label="Packages pagination">
+                <ul class="pagination justify-content-center">
+                    {% if packages.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ packages.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in packages.paginator.page_range %}
+                    {% if packages.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% elif num > packages.number|add:'-3' and num < packages.number|add:'3' %} <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">{{
+                            num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if packages.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ packages.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ packages.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Package Categories -->
+{% if not search_query and not difficulty and not min_price and not max_price %}
+<section class="package-categories py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-accent">Package</span> Categories
+                    </h2>
+                    <p class="section-subtitle">Find the perfect adventure for your travel style</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card adventure-category">
+                    <div class="category-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h4 class="category-title">Adventure Tours</h4>
+                    <p class="category-description">Thrilling expeditions for adrenaline seekers</p>
+                    <div class="category-stats">
+                        <span class="stat">15+ Packages</span>
+                        <span class="stat">From $299</span>
+                    </div>
+                    <a href="?difficulty=challenging" class="category-link">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card cultural-category">
+                    <div class="category-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h4 class="category-title">Cultural Experiences</h4>
+                    <p class="category-description">Immerse yourself in local traditions</p>
+                    <div class="category-stats">
+                        <span class="stat">12+ Packages</span>
+                        <span class="stat">From $199</span>
+                    </div>
+                    <a href="?difficulty=easy" class="category-link">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card luxury-category">
+                    <div class="category-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h4 class="category-title">Luxury Escapes</h4>
+                    <p class="category-description">Premium experiences for discerning travelers</p>
+                    <div class="category-stats">
+                        <span class="stat">8+ Packages</span>
+                        <span class="stat">From $899</span>
+                    </div>
+                    <a href="?min_price=800" class="category-link">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Why Choose Our Packages -->
+<section class="why-choose-packages py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        Why Choose Our <span class="title-accent">Packages</span>
+                    </h2>
+                    <p class="section-subtitle">What makes our travel packages special</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h4 class="benefit-title">Custom Itineraries</h4>
+                    <p class="benefit-text">Tailored experiences designed for your preferences</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4 class="benefit-title">Expert Guides</h4>
+                    <p class="benefit-text">Local professionals with deep destination knowledge</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4 class="benefit-title">24/7 Support</h4>
+                    <p class="benefit-text">Round-the-clock assistance throughout your journey</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h4 class="benefit-title">Best Value</h4>
+                    <p class="benefit-text">Competitive pricing with no hidden fees</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Process -->
+<section class="booking-process py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-accent">Simple</span> Booking Process
+                    </h2>
+                    <p class="section-subtitle">Book your dream vacation in just 3 easy steps</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="process-step">
+                    <div class="step-number">
+                        <span>1</span>
+                    </div>
+                    <div class="step-content">
+                        <h4 class="step-title">Choose Your Package</h4>
+                        <p class="step-description">Browse our curated selection of travel packages and find the perfect
+                            adventure for you.</p>
+                    </div>
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="process-step">
+                    <div class="step-number">
+                        <span>2</span>
+                    </div>
+                    <div class="step-content">
+                        <h4 class="step-title">Customize & Book</h4>
+                        <p class="step-description">Personalize your experience and secure your booking with our easy
+                            online process.</p>
+                    </div>
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="process-step">
+                    <div class="step-number">
+                        <span>3</span>
+                    </div>
+                    <div class="step-content">
+                        <h4 class="step-title">Travel & Enjoy</h4>
+                        <p class="step-description">Pack your bags and get ready for an unforgettable adventure with our
+                            expert support.</p>
+                    </div>
+                    <div class="step-icon">
+                        <i class="fas fa-plane-departure"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="packages-cta">
+    <div class="cta-background">
+        <div class="cta-overlay"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Start Your Adventure?</h2>
+                    <p class="cta-subtitle">Don't wait - your perfect vacation is just a click away!</p>
+                    <div class="cta-buttons">
+                        <a href="#packagesGrid" class="btn btn-primary btn-lg me-3 scroll-to-packages">
+                            <i class="fas fa-rocket me-2"></i>Browse Packages
+                        </a>
+                        <a href="#" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-phone me-2"></i>Get Help
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/packages.js' %}"></script>
+{% endblock %}
