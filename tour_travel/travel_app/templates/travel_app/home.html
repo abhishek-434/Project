@@ -193,7 +193,7 @@
                                         <span class="price-label">From</span>
                                         <span class="price-value">₹{{ package.price }}</span>
                                     </div>
-                                    <a href="#" class="btn btn-primary btn-sm">
+                                    <a href="{% url 'package_detail' package.pk %}" class="btn btn-primary btn-sm">
                                         View Details
                                     </a>
                                 </div>
