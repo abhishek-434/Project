@@ -51,12 +51,12 @@
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="form-label">Min Price ($)</label>
+                        <label class="form-label">Min Price (₹)</label>
                         <input type="number" class="form-control" name="min_price" value="{{ min_price }}"
                             placeholder="0" min="0">
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="form-label">Max Price ($)</label>
+                        <label class="form-label">Max Price (₹)</label>
                         <input type="number" class="form-control" name="max_price" value="{{ max_price }}"
                             placeholder="10000" min="0">
                     </div>
@@ -90,10 +90,10 @@
                 <span class="filter-tag">Difficulty: {{ difficulty|title }}</span>
                 {% endif %}
                 {% if min_price %}
-                <span class="filter-tag">Min: ${{ min_price }}</span>
+                <span class="filter-tag">Min: ₹{{ min_price }}</span>
                 {% endif %}
                 {% if max_price %}
-                <span class="filter-tag">Max: ${{ max_price }}</span>
+                <span class="filter-tag">Max: ₹{{ max_price }}</span>
                 {% endif %}
             </div>
             <p class="results-count">{{ packages|length }} package{{ packages|length|pluralize }} found</p>
@@ -163,7 +163,7 @@
                             <div class="price-section">
                                 <span class="price-label">Starting from</span>
                                 <div class="price-value">
-                                    <span class="currency">$</span>
+                                    <span class="currency">₹</span>
                                     <span class="amount">{{ package.price }}</span>
                                     <span class="per-person">/ person</span>
                                 </div>
@@ -286,7 +286,7 @@
                     <p class="category-description">Thrilling expeditions for adrenaline seekers</p>
                     <div class="category-stats">
                         <span class="stat">15+ Packages</span>
-                        <span class="stat">From $299</span>
+                        <span class="stat">From ₹299</span>
                     </div>
                     <a href="?difficulty=challenging" class="category-link">
                         <i class="fas fa-arrow-right"></i>
@@ -302,7 +302,7 @@
                     <p class="category-description">Immerse yourself in local traditions</p>
                     <div class="category-stats">
                         <span class="stat">12+ Packages</span>
-                        <span class="stat">From $199</span>
+                        <span class="stat">From ₹199</span>
                     </div>
                     <a href="?difficulty=easy" class="category-link">
                         <i class="fas fa-arrow-right"></i>
@@ -318,7 +318,7 @@
                     <p class="category-description">Premium experiences for discerning travelers</p>
                     <div class="category-stats">
                         <span class="stat">8+ Packages</span>
-                        <span class="stat">From $899</span>
+                        <span class="stat">From ₹899</span>
                     </div>
                     <a href="?min_price=800" class="category-link">
                         <i class="fas fa-arrow-right"></i>
