@@ -1,162 +1,93 @@
 {% extends 'travel_app/base.html' %}
 {% load static %}
 
-{% block title %}Destinations - Travel App{% endblock %}
+{% block title %}Explore Destinations | Travel App{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/destinations.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="destinations-container">
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Explore Amazing Destinations</h1>
-            <p class="hero-subtitle">Discover breathtaking places around the world</p>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay">
+        <div class="container text-center">
+            <h1 class="hero-title">Explore Breathtaking Destinations</h1>
+            <p class="hero-subtitle">Discover your next adventure around the world</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Search Section -->
-    <section class="search-section">
-        <div class="container">
-            <form method="GET" class="search-form" id="searchForm">
-                <div class="search-wrapper">
-                    <input type="text" name="search" placeholder="Search destinations, countries, or descriptions..."
-                        class="search-input" value="{{ search_query|default:'' }}" id="searchInput">
-                    <button type="submit" class="search-btn">
-                        <i class="search-icon">🔍</i>
-                    </button>
-                </div>
-                {% if search_query %}
-                <div class="search-results-info">
-                    <p>Showing results for: <strong>"{{ search_query }}"</strong></p>
-                    <a href="{% url 'destination' %}" class="clear-search">Clear search</a>
-                </div>
-                {% endif %}
-            </form>
-        </div>
-    </section>
+<!-- Search and Filter -->
+<section class="search-bar py-4">
+    <div class="container">
+        <form method="GET" class="d-flex justify-content-center">
+            <input type="text" name="search" value="{{ search_query|default_if_none:'' }}" class="form-control me-2" placeholder="Search destinations...">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</section>
 
-    <!-- Destinations Grid -->
-    <section class="destinations-section">
-        <div class="container">
-            {% if destinations %}
-            <div class="destinations-grid" id="destinationsGrid">
-                {% for destination in destinations %}
-                <div class="destination-card" data-destination-id="{{ destination.id }}">
-                    <div class="card-image">
-                        {% if destination.image %}
-                        <img src="{{ destination.image.url }}" alt="{{ destination.name }}" loading="lazy">
-                        {% else %}
-                        <div class="placeholder-image">
-                            <span class="placeholder-icon">🏞️</span>
-                        </div>
-                        {% endif %}
-                        <div class="card-overlay">
-                            <button class="favorite-btn" data-id="{{ destination.id }}">
-                                <span class="heart-icon">♡</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="destination-name">{{ destination.name }}</h3>
-                        <p class="destination-country">{{ destination.country }}</p>
-                        <p class="destination-description">{{ destination.description|truncatewords:15 }}</p>
-                        {% if destination.rating %}
-                        <div class="rating">
-                            <span class="stars">
-                                {% for i in "12345" %}
-                                {% if forloop.counter <= destination.rating %} <span class="star filled">★</span>
-                            {% else %}
-                            <span class="star">☆</span>
-                            {% endif %}
-                            {% endfor %}
-                            </span>
-                            <span class="rating-value">{{ destination.rating }}/5</span>
-                        </div>
-                        {% endif %}
-                        <div class="card-actions">
-                            <a href="#" class="btn btn-primary">
-                                View Details
-                            </a>
-                            {% if destination.price %}
-                            <span class="price">${{ destination.price }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Pagination -->
-            {% if destinations.has_other_pages %}
-            <div class="pagination-wrapper">
-                <nav class="pagination" aria-label="Destinations pagination">
-                    {% if destinations.has_previous %}
-                    <a href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link first"
-                        aria-label="First page">
-                        ««
-                    </a>
-                    <a href="?page={{ destinations.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
-                        class="page-link prev" aria-label="Previous page">
-                        ‹
-                    </a>
+<!-- Destinations Grid -->
+<section class="destinations-section py-5">
+    <div class="container">
+        {% if destinations %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for destination in destinations %}
+            <div class="col">
+                <div class="card destination-card h-100 shadow-sm">
+                    {% if destination.image %}
+                    <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" loading="lazy">
                     {% endif %}
-
-                    {% for num in destinations.paginator.page_range %}
-                    {% if destinations.number == num %}
-                    <span class="page-link current" aria-current="page">{{ num }}</span>
-                    {% elif num > destinations.number|add:'-3' and num < destinations.number|add:'3' %} <a
-                        href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}"
-                        class="page-link">{{ num }}</a>
-                        {% elif num == 1 or num == destinations.paginator.num_pages %}
-                        <a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}"
-                            class="page-link">{{ num }}</a>
-                        {% elif num == destinations.number|add:'-4' or num == destinations.number|add:'4' %}
-                        <span class="page-link ellipsis">...</span>
-                        {% endif %}
-                        {% endfor %}
-
-                        {% if destinations.has_next %}
-                        <a href="?page={{ destinations.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
-                            class="page-link next" aria-label="Next page">
-                            ›
-                        </a>
-                        <a href="?page={{ destinations.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}"
-                            class="page-link last" aria-label="Last page">
-                            »»
-                        </a>
-                        {% endif %}
-                </nav>
-                <div class="pagination-info">
-                    <p>
-                        Showing {{ destinations.start_index }}-{{ destinations.end_index }}
-                        of {{ destinations.paginator.count }} destinations
-                    </p>
+                    <div class="card-body">
+                        <h5 class="card-title destination-name">{{ destination.name }}</h5>
+                        <p class="card-subtitle text-muted mb-2">{{ destination.country }}</p>
+                        <p class="card-text description">{{ destination.description|truncatechars:100 }}</p>
+                        <a href="#" class="btn btn-outline-primary mt-3">View Details</a>
+                    </div>
                 </div>
             </div>
-            {% endif %}
-
-            {% else %}
-            <!-- No Results -->
-            <div class="no-results">
-                <div class="no-results-icon">🗺️</div>
-                {% if search_query %}
-                <h3>No destinations found for "{{ search_query }}"</h3>
-                <p>Try adjusting your search terms or browse all destinations.</p>
-                <a href="{% url 'destination' %}" class="btn btn-primary">View All Destinations</a>
-                {% else %}
-                <h3>No destinations available</h3>
-                <p>Check back later for amazing travel destinations!</p>
-                {% endif %}
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
-    </section>
-</div>
-{% endblock %}
+        {% else %}
+        <div class="text-center py-5">
+            <h4 class="text-muted">No destinations found matching your search.</h4>
+        </div>
+        {% endif %}
+    </div>
+</section>
 
+<!-- Pagination -->
+{% if destinations.has_other_pages %}
+<nav class="pagination-section">
+    <ul class="pagination justify-content-center">
+        {% if destinations.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ destinations.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        {% for num in destinations.paginator.page_range %}
+        {% if destinations.number == num %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% elif num > destinations.number|add:'-3' and num < destinations.number|add:'3' %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if destinations.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ destinations.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
 {% block extra_js %}
 <script src="{% static 'js/destinations.js' %}"></script>
 {% endblock %}
