@@ -43,7 +43,7 @@
                         <h5 class="card-title destination-name">{{ destination.name }}</h5>
                         <p class="card-subtitle text-muted mb-2">{{ destination.country }}</p>
                         <p class="card-text description">{{ destination.description|truncatechars:100 }}</p>
-                        <a href="#" class="btn btn-outline-primary mt-3">View Details</a>
+                        <a href="{% url 'destination_detail' destination.id %}" class="btn btn-outline-primary mt-3">View Details</a>
                     </div>
                 </div>
             </div>

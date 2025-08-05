@@ -1,0 +1,116 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}Wanderlust Adventures - Discover Your Next Journey{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/destination_detail.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <a href="{% url 'destination' %}" class="back-btn">← Back to Destinations</a>
+
+    <div class="hero-section">
+        <div class="hero-image">
+            {% if destination.image %}
+            <img src="{{ destination.image.url }}" alt="{{ destination.name }}"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            {% endif %}
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1>{{ destination.name }}</h1>
+                    {% if destination.country %}
+                    <div class="location">📍 {{ destination.country }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="destination-info">
+        <h2>About {{ destination.name }}</h2>
+        {% if destination.description %}
+        <p>{{ destination.description }}</p>
+        {% else %}
+        <p>Discover the beauty and wonder of {{ destination.name }}. This amazing destination offers unforgettable
+            experiences and breathtaking sights that will create memories to last a lifetime.</p>
+        {% endif %}
+
+        {% if destination.best_time_to_visit %}
+        <p><strong>Best Time to Visit:</strong> {{ destination.best_time_to_visit }}</p>
+        {% endif %}
+
+        {% if destination.popular_attractions %}
+        <p><strong>Popular Attractions:</strong> {{ destination.popular_attractions }}</p>
+        {% endif %}
+    </div>
+
+    <div class="packages-section">
+        <h2 class="packages-title">Available Tour Packages</h2>
+
+        {% if packages %}
+        <div class="packages-grid">
+            {% for package in packages %}
+            <div class="package-card">
+                <div class="package-name">{{ package.name }}</div>
+
+                {% if package.description %}
+                <div class="package-description">{{ package.description }}</div>
+                {% endif %}
+
+                <div class="package-details">
+                    {% if package.duration %}
+                    <div class="detail-item">
+                        <span class="detail-label">Duration:</span>
+                        <span class="detail-value">{{ package.duration }} days</span>
+                    </div>
+                    {% endif %}
+
+                    {% if package.group_size %}
+                    <div class="detail-item">
+                        <span class="detail-label">Group Size:</span>
+                        <span class="detail-value">{{ package.group_size }} people</span>
+                    </div>
+                    {% endif %}
+
+                    {% if package.difficulty_level %}
+                    <div class="detail-item">
+                        <span class="detail-label">Difficulty:</span>
+                        <span class="detail-value">{{ package.difficulty_level }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if package.includes %}
+                    <div class="detail-item">
+                        <span class="detail-label">Includes:</span>
+                        <span class="detail-value">{{ package.includes }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if package.price %}
+                <div class="package-price">₹{{ package.price|floatformat:0 }}</div>
+                {% endif %}
+
+                <button class="book-btn" onclick="bookPackage('{{ package.id }}', '{{ package.name }}')">
+                    Book Now
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-packages">
+            <h3>No packages available yet</h3>
+            <p>We're working on creating amazing tour packages for {{ destination.name }}. Check back soon!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
