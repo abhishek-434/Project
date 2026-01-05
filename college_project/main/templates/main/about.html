@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="text-center">About Us</h1>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+        {% if college_info %}
+        <div class="row mb-5">
+            <div class="col-lg-12">
+                <h2 class="section-title">About {{ college_info.name }}</h2>
+                <p class="lead">{{ college_info.about }}</p>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-custom h-100">
+                    <div class="card-body">
+                        <h3 class="text-primary"><i class="bi bi-eye-fill"></i> Our Vision</h3>
+                        <p>{{ college_info.vision }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-custom h-100">
+                    <div class="card-body">
+                        <h3 class="text-primary"><i class="bi bi-bullseye"></i> Our Mission</h3>
+                        <p>{{ college_info.mission }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="principal-card">
+                    <h2 class="text-center mb-4">Principal's Message</h2>
+                    {% if college_info.principal_photo %}
+                    <img src="{{ college_info.principal_photo.url }}" alt="{{ college_info.principal_name }}" class="principal-photo">
+                    {% endif %}
+                    <h4 class="text-center text-primary">{{ college_info.principal_name }}</h4>
+                    <p class="text-center text-muted mb-4">Principal</p>
+                    <p class="text-justify">{{ college_info.principal_message }}</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">College information will be updated soon.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

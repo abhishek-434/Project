@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Faculty{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="text-center">Our Faculty</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="mb-4">
+            <div class="btn-group" role="group">
+                <a href="{% url 'faculty' %}" class="btn {% if not selected_dept %}btn-primary{% else %}btn-outline-primary{% endif %}">All Departments</a>
+                {% for dept in departments %}
+                <a href="?department={{ dept.code }}" class="btn {% if selected_dept.code == dept.code %}btn-primary{% else %}btn-outline-primary{% endif %}">{{ dept.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for member in faculty_members %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="faculty-card">
+                    {% if member.photo %}
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="faculty-photo">
+                    {% else %}
+                    <div class="faculty-placeholder">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    {% endif %}
+                    <div class="faculty-info">
+                        <h4>{{ member.name }}</h4>
+                        <p class="designation">{{ member.get_designation_display }}</p>
+                        <p class="text-muted mb-2">{{ member.department.name }}</p>
+                        <p class="mb-2"><strong>Qualification:</strong> {{ member.qualification }}</p>
+                        <p class="mb-2"><strong>Experience:</strong> {{ member.experience }}</p>
+                        {% if member.email %}
+                        <p class="mb-0"><i class="bi bi-envelope"></i> {{ member.email }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No faculty members found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="text-center">Contact Us</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="contact-info">
+                    <h4><i class="bi bi-geo-alt-fill"></i> Address</h4>
+                    {% if college_info %}
+                    <p>{{ college_info.address|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="contact-info mt-4">
+                    <h4><i class="bi bi-telephone-fill"></i> Phone</h4>
+                    {% if college_info %}
+                    <p>{{ college_info.phone }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="contact-info mt-4">
+                    <h4><i class="bi bi-envelope-fill"></i> Email</h4>
+                    {% if college_info %}
+                    <p>{{ college_info.email }}</p>
+                    {% endif %}
+                </div>
+                
+                {% if college_info %}
+                <div class="contact-info mt-4">
+                    <h4><i class="bi bi-share-fill"></i> Follow Us</h4>
+                    <div class="social-links">
+                        {% if college_info.facebook %}
+                        <a href="{{ college_info.facebook }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        {% endif %}
+                        {% if college_info.twitter %}
+                        <a href="{{ college_info.twitter }}" target="_blank" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        {% endif %}
+                        {% if college_info.instagram %}
+                        <a href="{{ college_info.instagram }}" target="_blank" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        {% endif %}
+                        {% if college_info.linkedin %}
+                        <a href="{{ college_info.linkedin }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="card shadow-custom">
+                    <div class="card-body">
+                        <h3 class="mb-4">Send us a Message</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                    <div class="text-danger">{{ form.name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                    <div class="text-danger">{{ form.email.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.phone }}
+                                    {% if form.phone.errors %}
+                                    <div class="text-danger">{{ form.phone.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.subject }}
+                                    {% if form.subject.errors %}
+                                    <div class="text-danger">{{ form.subject.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                <div class="text-danger">{{ form.message.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+                
+                {% if college_info.google_maps_embed %}
+                <div class="map-container mt-4">
+                    {{ college_info.google_maps_embed|safe }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

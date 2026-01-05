@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}College Website{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="top-bar-left">
+                        {% if college_info %}
+                        <span><i class="bi bi-telephone"></i> {{ college_info.phone }}</span>
+                        <span><i class="bi bi-envelope"></i> {{ college_info.email }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="top-bar-right">
+                        {% if college_info %}
+                        {% if college_info.facebook %}
+                        <a href="{{ college_info.facebook }}" target="_blank"><i class="bi bi-facebook"></i></a>
+                        {% endif %}
+                        {% if college_info.twitter %}
+                        <a href="{{ college_info.twitter }}" target="_blank"><i class="bi bi-twitter"></i></a>
+                        {% endif %}
+                        {% if college_info.instagram %}
+                        <a href="{{ college_info.instagram }}" target="_blank"><i class="bi bi-instagram"></i></a>
+                        {% endif %}
+                        {% if college_info.linkedin %}
+                        <a href="{{ college_info.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <strong>{% if college_info %}{{ college_info.name }}{% else %}College Name{% endif %}</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'courses' %}">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admissions' %}">Admissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'faculty' %}">Faculty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'gallery' %}">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'notices' %}">Notices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>About College</h5>
+                    <p>
+                        {% if college_info %}
+                        {{ college_info.about|truncatewords:30 }}
+                        {% else %}
+                        Excellence in education and character building.
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'courses' %}">Courses</a></li>
+                        <li><a href="{% url 'admissions' %}">Admissions</a></li>
+                        <li><a href="{% url 'faculty' %}">Faculty</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>Contact Info</h5>
+                    {% if college_info %}
+                    <p><i class="bi bi-geo-alt"></i> {{ college_info.address|linebreaks }}</p>
+                    <p><i class="bi bi-telephone"></i> {{ college_info.phone }}</p>
+                    <p><i class="bi bi-envelope"></i> {{ college_info.email }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2024 {% if college_info %}{{ college_info.name }}{% else %}College Name{% endif %}. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

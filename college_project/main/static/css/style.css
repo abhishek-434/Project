@@ -1,0 +1,614 @@
+/* Root Variables */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Top Bar */
+.top-bar {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+.top-bar-left span {
+    margin-right: 20px;
+}
+
+.top-bar-left i,
+.top-bar-right i {
+    margin-right: 5px;
+}
+
+.top-bar-right {
+    text-align: right;
+}
+
+.top-bar-right a {
+    color: white;
+    margin-left: 15px;
+    transition: color 0.3s;
+}
+
+.top-bar-right a:hover {
+    color: var(--primary-color);
+}
+
+/* Navigation */
+.navbar {
+    transition: all 0.3s;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    color: var(--primary-color) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    margin: 0 10px;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+}
+
+.carousel-item {
+    height: 600px;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-banner {
+    height: 600px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0a58ca 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    bottom: auto;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 60px 0;
+}
+
+.carousel-caption h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Animations */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-up {
+    animation: fadeUp 0.8s ease-out;
+}
+
+.animate-fade-up-delay {
+    animation: fadeUp 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-up-delay-2 {
+    animation: fadeUp 0.8s ease-out 0.4s both;
+}
+
+/* Section Styles */
+.section-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+/* Welcome Stats */
+.stat-card {
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card i {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.stat-card h3 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 10px 0;
+    color: var(--dark-color);
+}
+
+.stat-card p {
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+/* Course Cards */
+.course-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.course-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.course-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0a58ca 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-placeholder i {
+    font-size: 64px;
+    color: white;
+}
+
+.course-content {
+    padding: 20px;
+}
+
+.course-content h4 {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+/* Notice Items */
+.notices-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.notice-item {
+    display: flex;
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.notice-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.notice-date {
+    min-width: 70px;
+    height: 70px;
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.notice-date .day {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.notice-date .month {
+    display: block;
+    font-size: 14px;
+}
+
+.notice-content h5 {
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+/* Gallery Items */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    height: 250px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0a58ca 100%);
+}
+
+/* Faculty Cards */
+.faculty-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    text-align: center;
+}
+
+.faculty-card:hover {
+    transform: translateY(-10px);
+}
+
+.faculty-photo {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.faculty-placeholder {
+    width: 100%;
+    height: 250px;
+    background: var(--light-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.faculty-placeholder i {
+    font-size: 80px;
+    color: var(--secondary-color);
+}
+
+.faculty-info {
+    padding: 20px;
+}
+
+.faculty-info h4 {
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+.faculty-info .designation {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* About Page */
+.about-section {
+    padding: 60px 0;
+}
+
+.principal-card {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.principal-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+    border: 5px solid var(--primary-color);
+}
+
+/* Contact Page */
+.contact-info {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info h4 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.contact-info p {
+    margin-bottom: 15px;
+}
+
+.contact-info i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.map-container {
+    border-radius: 10px;
+    overflow: hidden;
+    height: 400px;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Forms */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 40px 0 20px;
+}
+
+.footer h5 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.footer a {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: white;
+}
+
+.footer ul {
+    padding-left: 0;
+}
+
+.footer li {
+    margin-bottom: 10px;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 30px;
+}
+
+.page-link {
+    color: var(--primary-color);
+}
+
+.page-link:hover {
+    color: #0a58ca;
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 400px;
+    }
+    
+    .carousel-caption h1 {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .top-bar-left,
+    .top-bar-right {
+        text-align: center;
+    }
+    
+    .top-bar-left span {
+        display: block;
+        margin: 5px 0;
+    }
+}
+
+/* Utility Classes */
+.shadow-custom {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-custom {
+    border-radius: 10px;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Page Header */
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0a58ca 100%);
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 40px;
+}
+
+.page-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Admission Steps */
+.admission-steps {
+    padding-left: 20px;
+}
+
+.admission-steps li {
+    margin-bottom: 20px;
+    line-height: 1.8;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
+/* Loading Animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+/* Social Links */
+.social-links a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* Navbar Scrolled State */
+.navbar.scrolled {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
