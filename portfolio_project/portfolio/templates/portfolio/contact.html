@@ -1,0 +1,225 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Contact Me - Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">I'd love to hear from you. Let's create something amazing together!</p>
+        </div>
+        
+        <div class="row g-5">
+            <!-- Contact Information -->
+            <div class="col-lg-4 fade-in">
+                <div class="glass-card h-100">
+                    <h3 class="h4 mb-4 gradient-text">Contact Information</h3>
+                    
+                    {% if profile %}
+                    <div class="mb-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <small class="text-white-50 d-block mb-1">Email</small>
+                                <a href="mailto:{{ profile.email }}" class="text-white text-decoration-none">
+                                    {{ profile.email }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-secondary); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <small class="text-white-50 d-block mb-1">Phone</small>
+                                <a href="tel:{{ profile.phone_number }}" class="text-white text-decoration-none">
+                                    {{ profile.phone_number }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if profile.address %}
+                    <div class="mb-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-tertiary); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <small class="text-white-50 d-block mb-1">Location</small>
+                                <p class="text-white mb-0">{{ profile.address }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    
+                    <div class="mt-5">
+                        <h4 class="h5 mb-3">Follow Me</h4>
+                        <div class="d-flex gap-2 flex-wrap">
+                            {% if profile.github %}
+                            <a href="{{ profile.github }}" target="_blank" class="social-icon">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            {% endif %}
+                            {% if profile.linkedin %}
+                            <a href="{{ profile.linkedin }}" target="_blank" class="social-icon">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            {% endif %}
+                            {% if profile.twitter %}
+                            <a href="{{ profile.twitter }}" target="_blank" class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            {% endif %}
+                            {% if profile.instagram %}
+                            <a href="{{ profile.instagram }}" target="_blank" class="social-icon">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="col-lg-8 fade-in">
+                <div class="glass-card">
+                    <h3 class="h4 mb-4 gradient-text">Send Me a Message</h3>
+                    
+                    <form method="POST" id="contactForm">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="name" class="form-label">
+                                        <i class="fas fa-user me-2"></i>Your Name
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="name" 
+                                           name="name" 
+                                           placeholder="John Doe" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope me-2"></i>Your Email
+                                    </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           name="email" 
+                                           placeholder="john@example.com" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label for="subject" class="form-label">
+                                        <i class="fas fa-tag me-2"></i>Subject
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="subject" 
+                                           name="subject" 
+                                           placeholder="Project Inquiry" 
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label for="message" class="form-label">
+                                        <i class="fas fa-comment-dots me-2"></i>Message
+                                    </label>
+                                    <textarea class="form-control" 
+                                              id="message" 
+                                              name="message" 
+                                              rows="6" 
+                                              placeholder="Tell me about your project or inquiry..." 
+                                              required></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary-glow w-100 w-md-auto">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Quick Contact Cards -->
+                <div class="row g-3 mt-4">
+                    <div class="col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <div class="icon-box mx-auto mb-3" style="width: 60px; height: 60px; background: var(--gradient-primary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-clock text-white fs-4"></i>
+                            </div>
+                            <h5 class="h6 mb-2">Response Time</h5>
+                            <p class="text-white-50 small mb-0">Within 24 hours</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <div class="icon-box mx-auto mb-3" style="width: 60px; height: 60px; background: var(--gradient-secondary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-comments text-white fs-4"></i>
+                            </div>
+                            <h5 class="h6 mb-2">Open to</h5>
+                            <p class="text-white-50 small mb-0">Freelance & Full-time</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <div class="icon-box mx-auto mb-3" style="width: 60px; height: 60px; background: var(--gradient-tertiary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-handshake text-white fs-4"></i>
+                            </div>
+                            <h5 class="h6 mb-2">Collaboration</h5>
+                            <p class="text-white-50 small mb-0">Remote & On-site</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map or Additional Info (Optional) -->
+        <div class="row mt-5">
+            <div class="col-12 fade-in">
+                <div class="glass-card text-center">
+                    <h3 class="h4 mb-3 gradient-text">Let's Build Something Great Together</h3>
+                    <p class="text-white-50 mb-4">
+                        Whether you have a project in mind, want to collaborate, or just want to say hello, 
+                        I'm always happy to connect with fellow developers and creative minds.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        {% if profile.resume %}
+                        <a href="{{ profile.resume.url }}" download class="btn btn-outline-glow">
+                            <i class="fas fa-download me-2"></i>Download Resume
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'projects' %}" class="btn btn-outline-glow">
+                            <i class="fas fa-folder-open me-2"></i>View My Work
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

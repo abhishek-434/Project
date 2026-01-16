@@ -1,0 +1,83 @@
+<!-- ========================================================================= -->
+<!-- EXPERIENCE TEMPLATE: portfolio/templates/portfolio/experience.html -->
+<!-- ========================================================================= -->
+
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Experience - Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Professional Experience</h2>
+            <p class="section-subtitle">My career journey and achievements</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                {% for exp in experiences %}
+                <div class="timeline-item glass-card fade-in mb-4">
+                    <div class="timeline-dot"></div>
+                    
+                    <div class="row align-items-center mb-3">
+                        <div class="col-md-8">
+                            <h3 class="h4 mb-2 gradient-text">{{ exp.position }}</h3>
+                            <h5 class="mb-2 text-white-50">
+                                <i class="fas fa-building me-2"></i>{{ exp.company }}
+                            </h5>
+                            {% if exp.location %}
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-map-marker-alt me-2"></i>{{ exp.location }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            {% if exp.company_logo %}
+                            <img src="{{ exp.company_logo.url }}" 
+                                 alt="{{ exp.company }}" 
+                                 class="img-fluid rounded-3"
+                                 style="max-width: 100px; border: 2px solid rgba(255,255,255,0.1);">
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="badge" style="background: var(--gradient-secondary); padding: 0.5rem 1rem; border-radius: 20px;">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            {{ exp.start_date|date:"M Y" }} - 
+                            {% if exp.is_current %}
+                                <span class="text-white">Present</span>
+                            {% else %}
+                                {{ exp.end_date|date:"M Y" }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <p class="text-white-50 mb-3">{{ exp.description }}</p>
+                    
+                    {% if exp.technologies %}
+                    <div class="mt-3">
+                        <strong class="d-block mb-2">Technologies Used:</strong>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for tech in exp.get_technologies_list %}
+                            <span class="badge" style="background: rgba(102, 126, 234, 0.2); border: 1px solid rgba(102, 126, 234, 0.5); padding: 0.5rem 1rem; border-radius: 15px; color: white;">
+                                {{ tech }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="text-center glass-card fade-in">
+                    <i class="fas fa-briefcase display-1 mb-4 text-white-50"></i>
+                    <p class="lead">No experience records found. Add them from the admin panel.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!-- ========================================================================= -->
+<!-- PROJECTS TEMPLATE: portfolio/templates/portfolio/projects.html -->
+<!-- ========================================================================= -->
+
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Projects - Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-header fade-in">
+            <h2 class="section-title">My Projects</h2>
+            <p class="section-subtitle">Showcasing my work and accomplishments</p>
+        </div>
+        
+        <div class="row g-4">
+            {% for project in projects %}
+            <div class="col-md-6 col-lg-4 fade-in">
+                <div class="glass-card project-card tilt-card" style="height: 100%; padding: 0; overflow: hidden;">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                    {% else %}
+                    <div class="project-image" style="background: var(--gradient-primary);"></div>
+                    {% endif %}
+                    
+                    <div class="project-overlay">
+                        <div class="p-4">
+                            {% if project.is_featured %}
+                            <span class="badge mb-3" style="background: var(--gradient-tertiary); padding: 0.5rem 1rem; border-radius: 15px;">
+                                <i class="fas fa-star me-2"></i>Featured
+                            </span>
+                            {% endif %}
+                            
+                            <h3 class="h4 mb-3">{{ project.title }}</h3>
+                            <p class="text-white-50 mb-3">{{ project.description }}</p>
+                            
+                            {% if project.long_description %}
+                            <p class="text-white-50 small mb-3">{{ project.long_description|truncatewords:30 }}</p>
+                            {% endif %}
+                            
+                            <div class="mb-3">
+                                <small class="text-white-50">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    {{ project.completed_date|date:"M Y" }}
+                                </small>
+                            </div>
+                            
+                            {% if project.technologies %}
+                            <div class="mb-3">
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% for tech in project.get_technologies_list %}
+                                    <span class="badge" style="background: rgba(79, 172, 254, 0.2); border: 1px solid rgba(79, 172, 254, 0.5); padding: 0.3rem 0.8rem; border-radius: 10px; font-size: 0.75rem;">
+                                        {{ tech }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="d-flex gap-2 flex-wrap">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-outline-glow flex-fill">
+                                    <i class="fab fa-github me-2"></i>Code
+                                </a>
+                                {% endif %}
+                                {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" class="btn btn-sm btn-primary-glow flex-fill">
+                                    <i class="fas fa-external-link-alt me-2"></i>Live
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="text-center glass-card fade-in">
+                    <i class="fas fa-project-diagram display-1 mb-4 text-white-50"></i>
+                    <p class="lead">No projects found. Add them from the admin panel.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if projects %}
+        <div class="text-center mt-5 fade-in">
+            <p class="text-white-50">Have a project idea? Let's work together!</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary-glow mt-3">
+                <i class="fas fa-paper-plane me-2"></i>Start a Conversation
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

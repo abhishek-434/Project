@@ -1,0 +1,144 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}About Me - {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-header fade-in">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-subtitle">Get to know more about who I am</p>
+        </div>
+        
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5 fade-in">
+                {% if profile.profile_image %}
+                <div class="glass-card text-center">
+                    <img src="{{ profile.profile_image.url }}" 
+                         alt="{{ profile.name }}" 
+                         class="img-fluid rounded-4"
+                         style="max-width: 400px; border: 3px solid rgba(255,255,255,0.1);">
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-lg-7 fade-in">
+                <div class="glass-card">
+                    <h3 class="h2 mb-4 gradient-text">{{ profile.name }}</h3>
+                    <h5 class="mb-4 text-white-50">{{ profile.profession }}</h5>
+                    <p class="lead mb-4" style="line-height: 2;">{{ profile.bio }}</p>
+                    
+                    {% if profile.resume %}
+                    <a href="{{ profile.resume.url }}" download class="btn btn-primary-glow">
+                        <i class="fas fa-download me-2"></i>Download Resume
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Personal Details -->
+        <div class="row g-4 mt-5">
+            <div class="col-12 fade-in">
+                <div class="glass-card">
+                    <h3 class="h3 mb-4 gradient-text">
+                        <i class="fas fa-user-circle me-3"></i>Personal Details
+                    </h3>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="detail-item mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-birthday-cake text-white"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-white-50">Date of Birth</small>
+                                        <div class="fw-bold">{{ profile.date_of_birth|date:"F d, Y" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="detail-item mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-secondary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-envelope text-white"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-white-50">Email</small>
+                                        <div class="fw-bold">{{ profile.email }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="detail-item mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-tertiary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-phone text-white"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-white-50">Phone</small>
+                                        <div class="fw-bold">{{ profile.phone_number }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if profile.address %}
+                        <div class="col-md-6">
+                            <div class="detail-item mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="icon-box me-3" style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-map-marker-alt text-white"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-white-50">Location</small>
+                                        <div class="fw-bold">{{ profile.address }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Media -->
+        <div class="row mt-4">
+            <div class="col-12 fade-in">
+                <div class="glass-card text-center">
+                    <h4 class="mb-4">Connect With Me</h4>
+                    <div class="social-links d-flex justify-content-center gap-3">
+                        {% if profile.github %}
+                        <a href="{{ profile.github }}" target="_blank" class="social-icon" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        {% endif %}
+                        {% if profile.linkedin %}
+                        <a href="{{ profile.linkedin }}" target="_blank" class="social-icon" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        {% endif %}
+                        {% if profile.twitter %}
+                        <a href="{{ profile.twitter }}" target="_blank" class="social-icon" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+                        {% if profile.instagram %}
+                        <a href="{{ profile.instagram }}" target="_blank" class="social-icon" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

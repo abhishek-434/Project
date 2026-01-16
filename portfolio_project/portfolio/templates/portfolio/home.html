@@ -1,0 +1,167 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.name }} - Portfolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <div class="container">
+        <div class="hero-content fade-in">
+            {% if profile.profile_image %}
+            <div class="mb-5">
+                <img src="{{ profile.profile_image.url }}" 
+                     alt="{{ profile.name }}" 
+                     class="rounded-circle"
+                     style="width: 200px; height: 200px; object-fit: cover; border: 3px solid rgba(255,255,255,0.2); box-shadow: 0 0 40px rgba(255,255,255,0.2);">
+            </div>
+            {% endif %}
+            
+            <h1 class="hero-title">{{ profile.name|default:"Your Name" }}</h1>
+            <p class="hero-subtitle">{{ profile.profession|default:"Your Profession" }}</p>
+            <p class="hero-description">{{ profile.bio|default:"Welcome to my portfolio" }}</p>
+            
+            <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+                <a href="{% url 'projects' %}" class="btn btn-primary-glow">
+                    View My Work
+                </a>
+                <a href="{% url 'contact' %}" class="btn btn-outline-glow">
+                    Get In Touch
+                </a>
+            </div>
+            
+            {% if profile %}
+            <div class="mt-5">
+                <div class="social-links">
+                    {% if profile.github %}
+                    <a href="{{ profile.github }}" target="_blank" class="social-icon">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    {% endif %}
+                    {% if profile.linkedin %}
+                    <a href="{{ profile.linkedin }}" target="_blank" class="social-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    {% endif %}
+                    {% if profile.twitter %}
+                    <a href="{{ profile.twitter }}" target="_blank" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if profile.instagram %}
+                    <a href="{{ profile.instagram }}" target="_blank" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" style="position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);">
+        <div style="width: 30px; height: 50px; border: 2px solid rgba(255,255,255,0.5); border-radius: 20px; position: relative;">
+            <div style="width: 6px; height: 10px; background: white; border-radius: 3px; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); animation: scrollDown 1.5s infinite;"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects Preview -->
+{% if featured_projects %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">Check out some of my recent work</p>
+        </div>
+        
+        <div class="row g-4">
+            {% for project in featured_projects %}
+            <div class="col-md-4 fade-in">
+                <div class="glass-card project-card tilt-card">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                    {% else %}
+                    <div class="project-image" style="background: var(--gradient-primary);"></div>
+                    {% endif %}
+                    
+                    <div class="project-overlay">
+                        <div class="text-center">
+                            <h3 class="h4 mb-3">{{ project.title }}</h3>
+                            <p class="text-white-50 mb-4">{{ project.description|truncatewords:20 }}</p>
+                            <div class="d-flex gap-2 justify-content-center">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-outline-glow">
+                                    <i class="fab fa-github me-2"></i>Code
+                                </a>
+                                {% endif %}
+                                {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" class="btn btn-sm btn-primary-glow">
+                                    <i class="fas fa-external-link-alt me-2"></i>Live Demo
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5 fade-in">
+            <a href="{% url 'projects' %}" class="btn btn-outline-glow">
+                View All Projects <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Quick Stats -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3 fade-in">
+                <div class="glass-card">
+                    <div class="display-4 mb-3 gradient-text">
+                        <span class="counter" data-target="5">0</span>+
+                    </div>
+                    <h5>Years Experience</h5>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="glass-card">
+                    <div class="display-4 mb-3 gradient-text">
+                        <span class="counter" data-target="50">0</span>+
+                    </div>
+                    <h5>Projects Completed</h5>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="glass-card">
+                    <div class="display-4 mb-3 gradient-text">
+                        <span class="counter" data-target="30">0</span>+
+                    </div>
+                    <h5>Happy Clients</h5>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="glass-card">
+                    <div class="display-4 mb-3 gradient-text">
+                        <span class="counter" data-target="15">0</span>+
+                    </div>
+                    <h5>Technologies</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes scrollDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    50% { transform: translateX(-50%) translateY(10px); opacity: 0.5; }
+}
+</style>
+{% endblock %}
