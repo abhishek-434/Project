@@ -120,7 +120,7 @@
                                     </span>
                                 </div>
                                 <div class="overlay-actions">
-                                    <a href="#" class="view-detail-btn">
+                                    <a href="{% url 'package_detail' package.pk  %}" class="view-detail-btn">
                                         <i class="fas fa-eye"></i>
                                         <span>View Details</span>
                                     </a>
@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="action-buttons">
-                                <a href="#" class="btn btn-primary book-btn">
+                                <a href="{% url 'package_detail' package.pk  %}" class="btn btn-primary book-btn">
                                     <i class="fas fa-calendar-check me-2"></i>Book Now
                                 </a>
                             </div>

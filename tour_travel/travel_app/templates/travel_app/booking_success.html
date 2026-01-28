@@ -1,0 +1,60 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed - Wanderlust Adventures{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="card border-0 shadow-lg p-5">
+                <div class="mb-4">
+                    <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center text-white"
+                        style="width: 80px; height: 80px;">
+                        <i class="fas fa-check fa-3x"></i>
+                    </div>
+                </div>
+
+                <h1 class="display-5 text-success mb-3">Booking Confirmed!</h1>
+                <p class="lead text-muted mb-5">Thank you, <span class="fw-bold">{{ booking.full_name }}</span>! Your
+                    booking request has been submitted successfully.</p>
+
+                <div class="card bg-light border-0 mb-5 text-start">
+                    <div class="card-body p-4">
+                        <h5 class="mb-4 border-bottom pb-2">Booking Details</h5>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <small class="text-muted d-block">Booking Reference</small>
+                                <span class="fw-bold">#{{ booking.id }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted d-block">Package</small>
+                                <span class="fw-bold">{{ booking.package.title }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted d-block">Travel Date</small>
+                                <span class="fw-bold">{{ booking.travel_date }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted d-block">Travelers</small>
+                                <span class="fw-bold">{{ booking.number_of_people }} Person(s)</span>
+                            </div>
+                            <div class="col-12 mt-3 pt-3 border-top">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Total Amount</span>
+                                    <span class="h4 text-primary mb-0">₹{{ booking.total_amount }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Return Home</a>
+                    <a href="{% url 'packages' %}" class="btn btn-primary">Browse More Packages</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

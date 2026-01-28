@@ -20,6 +20,9 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 
     <!-- Base CSS -->
     <link href="{% load static %}{% static 'css/base.css' %}" rel="stylesheet">
@@ -134,10 +137,10 @@
                         <h6 class="footer-subtitle">Quick Links</h6>
                         <ul class="footer-links">
                             <li><a href="{% url 'home' %}">Home</a></li>
-                            <li><a href="#">Destinations</a></li>
+                            <li><a href="{% url 'destination' %}">Destinations</a></li>
                             <li><a href="{% url 'packages' %}">Packages</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
                         </ul>
                     </div>
                 </div>
@@ -203,6 +206,16 @@
 
     <!-- Base JavaScript -->
     <script src="{% load static %}{% static 'js/base.js' %}"></script>
+
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>

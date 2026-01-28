@@ -1,45 +1,40 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Animate statistics counters
-    function animateCounters() {
-        const counters = document.querySelectorAll('.stat-number');
-        const speed = 200; // Animation duration in ms
+    // Stats Counter Animation
+    const stats = document.querySelectorAll('.stat-number');
 
-        counters.forEach(counter => {
-            const target = +counter.getAttribute('data-count');
-            const count = +counter.innerText;
-            const increment = target / speed;
+    const animateStats = () => {
+        stats.forEach(stat => {
+            const target = +stat.getAttribute('data-count');
+            const duration = 2000; // Animation duration in ms
+            const increment = target / (duration / 16); // 60fps
 
-            if (count < target) {
-                counter.innerText = Math.ceil(count + increment);
-                setTimeout(animateCounters, 1);
-            } else {
-                counter.innerText = target.toLocaleString();
-            }
+            let current = 0;
+            const updateCount = () => {
+                current += increment;
+                if (current < target) {
+                    stat.innerText = Math.ceil(current);
+                    requestAnimationFrame(updateCount);
+                } else {
+                    stat.innerText = target;
+                }
+            };
+
+            updateCount();
         });
-    }
+    };
 
-    // Start animation when hero section is in view
+    // Intersection Observer for stats
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                animateCounters();
+                animateStats();
                 observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.5 });
 
-    const heroStats = document.querySelector('.hero-stats');
-    if (heroStats) {
-        observer.observe(heroStats);
+    const statsSection = document.querySelector('.hero-stats');
+    if (statsSection) {
+        observer.observe(statsSection);
     }
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
 });

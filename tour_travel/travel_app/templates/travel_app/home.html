@@ -70,7 +70,7 @@
 <!-- Search Section -->
 <section class="search-section">
     <div class="container">
-        <div class="search-card glass-effect">
+        <div class="search-card glass-effect" data-aos="fade-up">
             <div class="row">
                 <div class="col-lg-10 mx-auto">
                     <form method="GET" action="#" class="search-form">
@@ -111,8 +111,8 @@
 
         <div class="row g-4">
             {% for destination in featured_destinations %}
-            <div class="col-lg-4 col-md-6">
-                <div class="destination-card animate-on-scroll">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                <div class="destination-card">
                     <div class="card-image">
                         <img src="{% if destination.image %}{{ destination.image.url }}{% else %}https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
                             alt="{{ destination.name }}" class="img-fluid">
@@ -122,7 +122,7 @@
                                 <p class="destination-country">
                                     <i class="fas fa-map-marker-alt me-1"></i>{{ destination.country }}
                                 </p>
-                                <a href="#" class="btn btn-light btn-sm">
+                                <a href="{% url 'destination_detail' destination.id %}" class="btn btn-light btn-sm">
                                     Explore <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
                             </div>
@@ -161,8 +161,8 @@
 
         <div class="row g-4">
             {% for package in featured_packages %}
-            <div class="col-lg-6">
-                <div class="package-card animate-on-scroll">
+            <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                <div class="package-card">
                     <div class="row g-0">
                         <div class="col-md-5">
                             <div class="package-image">
@@ -232,8 +232,8 @@
         </div>
 
         <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card animate-on-scroll">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-award"></i>
                     </div>

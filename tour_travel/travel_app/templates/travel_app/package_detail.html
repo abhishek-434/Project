@@ -1,0 +1,201 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ package.title }} - Wanderlust Adventures{% endblock %}
+
+
+{% block extra_css %}
+<link href="{% static 'css/package_detail.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Top Section: Image and Key Info -->
+    <div class="row mb-5">
+        <div class="col-lg-7">
+            <div class="package-hero-image shadow-lg rounded-3 overflow-hidden h-100 position-relative"
+                data-aos="fade-right">
+                <img src="{% if package.image %}{{ package.image.url }}{% else %}https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80{% endif %}"
+                    class="img-fluid w-100 h-100 object-fit-cover" alt="{{ package.title }}">
+                <div class="package-badge">
+                    <span class="badge bg-primary fs-6 px-3 py-2 shadow">{{ package.duration_days }} Days</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 ps-lg-4 d-flex flex-column justify-content-center" data-aos="fade-left">
+            <h1 class="display-4 fw-bold mb-3 text-gradient">{{ package.title }}</h1>
+
+            <div class="package-meta mb-4">
+                <div class="d-flex align-items-center mb-2 text-muted">
+                    <i class="fas fa-map-marker-alt text-primary me-3 fa-lg"></i>
+                    <span class="h5 mb-0">{{ package.destination.name }}, {{ package.destination.country }}</span>
+                </div>
+                <div class="d-flex align-items-center mb-2 text-muted">
+                    <i class="fas fa-signal text-primary me-3 fa-lg"></i>
+                    <span class="h5 mb-0">{{ package.get_difficulty_display }} Difficulty</span>
+                </div>
+                {% if avg_rating %}
+                <div class="d-flex align-items-center text-warning">
+                    <i class="fas fa-star me-3 fa-lg"></i>
+                    <span class="h5 mb-0 text-dark">{{ avg_rating|floatformat:1 }} / 5.0</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="package-price-card p-4 bg-light rounded-3 border-start border-primary border-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block small">Starting from</span>
+                        <span class="h2 text-primary fw-bold mb-0">₹{{ package.price }}</span>
+                        <span class="text-muted small">/ person</span>
+                    </div>
+                    <div class="text-end">
+                        <a href="#booking-sidebar" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            Book Now <i class="fas fa-arrow-down ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Content Column -->
+        <div class="col-lg-8">
+
+            <!-- Tabs for Description, Itinerary, Reviews -->
+            <ul class="nav nav-tabs mb-4" id="packageTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview"
+                        type="button" role="tab">Overview</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                        type="button" role="tab">Reviews ({{ reviews.count }})</button>
+                </li>
+            </ul>
+
+            <div class="tab-content mb-5" id="packageTabContent">
+                <!-- Overview Tab -->
+                <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                    <h3 class="mb-3" data-aos="fade-up">Description</h3>
+                    <p class="lead" data-aos="fade-up" data-aos-delay="100">{{ package.description|linebreaks }}</p>
+
+                    <h3 class="mb-3 mt-5" data-aos="fade-up" data-aos-delay="200">Included Services</h3>
+                    <div class="p-4 bg-light rounded-3" data-aos="fade-up" data-aos-delay="300">
+                        {{ package.included_services|linebreaks }}
+                    </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews" role="tabpanel">
+                    <div class="mb-4">
+                        <h3>Customer Reviews</h3>
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#reviewForm">
+                            Write a Review
+                        </button>
+                        <div class="collapse mb-4" id="reviewForm">
+                            <div class="card card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="review_form" value="1">
+                                    {{ review_form.as_p }}
+                                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Please <a href="#">login</a> to write a review.</p>
+                        {% endif %}
+                    </div>
+
+                    {% for review in reviews %}
+                    <div class="card mb-3 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ review.name }}</h5>
+                                <div class="text-warning">
+                                    {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= review.rating %} <i class="fas fa-star"></i>
+                                        {% else %}
+                                        <i class="far fa-star"></i>
+                                        {% endif %}
+                                        {% endfor %}
+                                </div>
+                            </div>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ review.created_at|date:"F d, Y" }}</h6>
+                            <p class="card-text">{{ review.comment }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No reviews yet. Be the first to review this package!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Sidebar -->
+        <div class="col-lg-4" id="booking-sidebar">
+            <div class="card shadow-lg border-0 sticky-top" style="top: 120px;" data-aos="fade-left"
+                data-aos-delay="200">
+                <div class="card-header bg-primary text-white p-3 text-center">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-calendar-check me-2"></i>Book Your Spot</h5>
+                </div>
+                <div class="card-body p-4">
+
+                    <h4 class="mb-3">Book this Adventure</h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in booking_form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
+                            <!-- Alternative link to full booking page -->
+                            <a href="{% url 'booking_page' package.id %}" class="btn btn-outline-secondary btn-sm">Full
+                                Booking Page</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer bg-light text-center py-3">
+                    <small class="text-muted"><i class="fas fa-shield-alt me-1"></i> Secure Booking</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Packages -->
+    {% if related_packages %}
+    <div class="mt-5 py-5 border-top">
+        <h2 class="mb-4">You Might Also Like</h2>
+        <div class="row g-4">
+            {% for related in related_packages %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% if related.image %}{{ related.image.url }}{% else %}https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                        class="card-img-top" alt="{{ related.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ related.title }}</h5>
+                        <p class="card-text text-muted">{{ related.description|truncatewords:10 }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="text-primary fw-bold">₹{{ related.price }}</span>
+                            <a href="{% url 'package_detail' related.pk %}" class="btn btn-outline-primary btn-sm">View
+                                Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

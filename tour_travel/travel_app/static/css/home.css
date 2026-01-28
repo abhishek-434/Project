@@ -404,16 +404,7 @@ img {
 }
 
 /* Scroll animation */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+/* Scroll animation handled by AOS library */
 
 
 /* Featured Packages Section */

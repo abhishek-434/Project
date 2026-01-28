@@ -1,0 +1,77 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}" - Wanderlust Adventures{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row mb-5">
+        <div class="col-12">
+            <h1 class="display-5">Search Results</h1>
+            <p class="lead text-muted">Showing results for "<span class="text-primary">{{ query }}</span>"</p>
+        </div>
+    </div>
+
+    <!-- Destinations Results -->
+    {% if destinations %}
+    <div class="mb-5">
+        <h3 class="mb-4 text-secondary"><i class="fas fa-map-marked-alt me-2"></i>Destinations</h3>
+        <div class="row g-4">
+            {% for dest in destinations %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <img src="{% if dest.image %}{{ dest.image.url }}{% else %}https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                        class="card-img-top" alt="{{ dest.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ dest.name }}</h5>
+                        <p class="card-text text-muted">{{ dest.country }}</p>
+                        <a href="{% url 'destination_detail' dest.pk %}"
+                            class="btn btn-outline-primary stretched-link">Explore</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Packages Results -->
+    {% if packages %}
+    <div class="mb-5">
+        <h3 class="mb-4 text-secondary"><i class="fas fa-suitcase me-2"></i>Tour Packages</h3>
+        <div class="row g-4">
+            {% for package in packages %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <img src="{% if package.image %}{{ package.image.url }}{% else %}https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}"
+                        class="card-img-top" alt="{{ package.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ package.title }}</h5>
+                        <div class="d-flex justify-content-between text-muted mb-2 small">
+                            <span><i class="fas fa-clock me-1"></i>{{ package.duration_days }} Days</span>
+                            <span><i class="fas fa-signal me-1"></i>{{ package.difficulty|title }}</span>
+                        </div>
+                        <h6 class="text-primary fw-bold mb-3">₹{{ package.price }}</h6>
+                        <a href="{% url 'package_detail' package.pk %}"
+                            class="btn btn-outline-primary w-100 stretched-link">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- No Results State -->
+    {% if not destinations and not packages %}
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-search fa-4x text-muted opacity-50"></i>
+        </div>
+        <h3>No results found</h3>
+        <p class="text-muted">We couldn't find any destinations or packages matching "{{ query }}".</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Back to Home</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

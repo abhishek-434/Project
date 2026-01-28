@@ -1,0 +1,131 @@
+{% extends 'travel_app/base.html' %}
+{% load static %}
+
+{% block title %}Book {{ package.title }} - Wanderlust Adventures{% endblock %}
+
+
+{% block extra_css %}
+<link href="{% static 'css/booking.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row g-0 booking-container">
+    <!-- Left Side: Image & Branding -->
+    <div class="col-lg-5 booking-image-col">
+        <div class="booking-overlay">
+            <h1 class="branding-text">Wanderlust Adventures</h1>
+            <p class="branding-subtext">Begin Your Journey With Us</p>
+        </div>
+    </div>
+
+    <!-- Right Side: Form -->
+    <div class="col-lg-7 booking-form-col">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <div class="form-card" data-aos="fade-up">
+                        <div class="form-header text-center">
+                            <h2 class="fw-bold mb-2">Secure Your Booking</h2>
+                            <p class="text-muted">Complete the form below to confirm your spot</p>
+                        </div>
+
+                        <!-- Package Mini Summary -->
+                        <div class="mini-summary d-flex align-items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="{% if package.image %}{{ package.image.url }}{% else %}https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80{% endif %}"
+                                    alt="Package" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0 fw-bold text-primary">{{ package.title }}</h6>
+                                <div class="small text-muted">{{ package.duration_days }} Days • ₹{{ package.price }} /
+                                    person</div>
+                            </div>
+                        </div>
+
+                        <form method="post" class="booking-form">
+                            {% csrf_token %}
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.full_name.id_for_label }}" class="form-label fw-bold">Full
+                                            Name</label>
+                                        {{ form.full_name }}
+                                        {% if form.full_name.errors %}
+                                        <div class="text-danger small mt-1">{{ form.full_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">Email
+                                            Address</label>
+                                        {{ form.email }}
+                                        {% if form.email.errors %}
+                                        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.phone.id_for_label }}" class="form-label fw-bold">Phone
+                                            Number</label>
+                                        {{ form.phone }}
+                                        {% if form.phone.errors %}
+                                        <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.number_of_people.id_for_label }}"
+                                            class="form-label fw-bold">No. of Travelers</label>
+                                        {{ form.number_of_people }}
+                                        {% if form.number_of_people.errors %}
+                                        <div class="text-danger small mt-1">{{ form.number_of_people.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.travel_date.id_for_label }}"
+                                            class="form-label fw-bold">Travel Date</label>
+                                        {{ form.travel_date }}
+                                        {% if form.travel_date.errors %}
+                                        <div class="text-danger small mt-1">{{ form.travel_date.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="{{ form.special_requests.id_for_label }}"
+                                            class="form-label fw-bold">Special Requests (Optional)</label>
+                                        {{ form.special_requests }}
+                                        {% if form.special_requests.errors %}
+                                        <div class="text-danger small mt-1">{{ form.special_requests.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid mt-5 gap-2">
+                                <button type="submit"
+                                    class="btn btn-primary btn-lg py-3 rounded-pill shadow-sm btn-confirm text-white">
+                                    <i class="fas fa-paper-plane me-2"></i> Confirm Booking
+                                </button>
+                                <a href="{% url 'package_detail' package.pk %}"
+                                    class="btn btn-light rounded-pill">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

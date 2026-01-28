@@ -133,8 +133,44 @@ def package_detail(request, pk):
 
 def booking_success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
+    
+    # Security check: ensure the user owns this booking if it's associated with a user
+    if booking.user and booking.user != request.user:
+        # If the user is logged in but tries to access another user's booking, or if not logged in
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
+        
     context = {'booking': booking}
     return render(request, 'travel_app/booking_success.html', context)
+
+def booking_page(request, package_id):
+    package = get_object_or_404(TourPackage, pk=package_id)
+    
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.package = package
+            if request.user.is_authenticated:
+                booking.user = request.user
+            booking.total_amount = package.price * booking.number_of_people
+            booking.save()
+            messages.success(request, 'Booking submitted successfully!')
+            return redirect('booking_success', booking_id=booking.id)
+    else:
+        initial_data = {}
+        if request.user.is_authenticated:
+            initial_data = {
+                'full_name': f"{request.user.first_name} {request.user.last_name}".strip(),
+                'email': request.user.email
+            }
+        form = BookingForm(initial=initial_data)
+        
+    context = {
+        'package': package,
+        'form': form,
+    }
+    return render(request, 'travel_app/booking_form.html', context)
 
 def about(request):
     return render(request, 'travel_app/about.html')
@@ -155,8 +191,11 @@ def contact(request):
 @csrf_exempt
 def newsletter_signup(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        email = data.get('email')
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
         
         if email:
             newsletter, created = Newsletter.objects.get_or_create(email=email)

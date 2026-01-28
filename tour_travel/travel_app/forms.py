@@ -2,6 +2,15 @@ from django import forms
 from .models import Booking, Review, Contact, Newsletter
 
 class BookingForm(forms.ModelForm):
+    number_of_people = forms.IntegerField(
+        min_value=1,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': '1',
+            'placeholder': 'Number of people'
+        })
+    )
+
     class Meta:
         model = Booking
         fields = ['full_name', 'email', 'phone', 'number_of_people', 'travel_date', 'special_requests']
@@ -17,11 +26,6 @@ class BookingForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter your phone number'
-            }),
-            'number_of_people': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': '1',
-                'placeholder': 'Number of people'
             }),
             'travel_date': forms.DateInput(attrs={
                 'class': 'form-control',

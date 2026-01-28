@@ -12,48 +12,62 @@
 <div class="container">
     <a href="{% url 'destination' %}" class="back-btn">← Back to Destinations</a>
 
-    <div class="hero-section">
-        <div class="hero-image">
-            {% if destination.image %}
-            <img src="{{ destination.image.url }}" alt="{{ destination.name }}"
-                style="width: 100%; height: 100%; object-fit: cover;">
-            {% endif %}
-            <div class="hero-overlay">
-                <div class="hero-content">
-                    <h1>{{ destination.name }}</h1>
-                    {% if destination.country %}
-                    <div class="location">📍 {{ destination.country }}</div>
-                    {% endif %}
-                </div>
+    <div class="row align-items-center mb-5 mt-4" data-aos="fade-up">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="destination-image-wrapper shadow-lg rounded-3 overflow-hidden">
+                {% if destination.image %}
+                <img src="{{ destination.image.url }}" alt="{{ destination.name }}"
+                    class="img-fluid w-100 h-100 object-fit-cover">
+                {% endif %}
             </div>
+        </div>
+        <div class="col-lg-6 ps-lg-5">
+            <h1 class="display-4 fw-bold mb-3 text-gradient">{{ destination.name }}</h1>
+
+            {% if destination.country %}
+            <div class="h5 text-muted mb-4">
+                <i class="fas fa-map-marker-alt text-primary me-2"></i>{{ destination.country }}
+            </div>
+            {% endif %}
+
+            <div class="destination-description mb-4">
+                {% if destination.description %}
+                <p class="lead">{{ destination.description }}</p>
+                {% else %}
+                <p class="lead">Discover the beauty and wonder of {{ destination.name }}. This amazing destination
+                    offers unforgettable experiences and breathtaking sights that will create memories to last a
+                    lifetime.</p>
+                {% endif %}
+            </div>
+
+            <div class="destination-meta mb-4 p-3 bg-light rounded-3 border-start border-primary border-4">
+                {% if destination.best_time_to_visit %}
+                <div class="mb-2"><strong><i class="fas fa-calendar-alt text-primary me-2"></i>Best Time to
+                        Visit:</strong> {{ destination.best_time_to_visit }}</div>
+                {% endif %}
+
+                {% if destination.popular_attractions %}
+                <div><strong><i class="fas fa-camera text-primary me-2"></i>Popular Attractions:</strong> {{
+                    destination.popular_attractions }}</div>
+                {% endif %}
+            </div>
+
+            <a href="#available-packages" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
+                <i class="fas fa-suitcase me-2"></i>Book Now
+            </a>
         </div>
     </div>
 
-    <div class="destination-info">
-        <h2>About {{ destination.name }}</h2>
-        {% if destination.description %}
-        <p>{{ destination.description }}</p>
-        {% else %}
-        <p>Discover the beauty and wonder of {{ destination.name }}. This amazing destination offers unforgettable
-            experiences and breathtaking sights that will create memories to last a lifetime.</p>
-        {% endif %}
-
-        {% if destination.best_time_to_visit %}
-        <p><strong>Best Time to Visit:</strong> {{ destination.best_time_to_visit }}</p>
-        {% endif %}
-
-        {% if destination.popular_attractions %}
-        <p><strong>Popular Attractions:</strong> {{ destination.popular_attractions }}</p>
-        {% endif %}
-    </div>
-
-    <div class="packages-section">
-        <h2 class="packages-title">Available Tour Packages</h2>
+    <div id="available-packages" class="packages-section pt-5 border-top">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Available Tour Packages</h2>
+            <div class="title-underline mx-auto"></div>
+        </div>
 
         {% if packages %}
         <div class="packages-grid">
             {% for package in packages %}
-            <div class="package-card">
+            <div class="package-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="package-name">{{ package.name }}</div>
 
                 {% if package.description %}
@@ -94,9 +108,9 @@
                 <div class="package-price">₹{{ package.price|floatformat:0 }}</div>
                 {% endif %}
 
-                <button class="book-btn" onclick="bookPackage('{{ package.id }}', '{{ package.name }}')">
+                <a href="{% url 'booking_page' package.id %}" class="book-btn">
                     Book Now
-                </button>
+                </a>
             </div>
             {% endfor %}
         </div>

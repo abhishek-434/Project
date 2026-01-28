@@ -1,0 +1,168 @@
+/* Package Detail Styles */
+
+body {
+    padding-top: 100px;
+}
+
+/* Header & Typography */
+.display-4 {
+    font-family: 'Dancing Script', cursive;
+    color: var(--secondary-color);
+    font-weight: 700 !important;
+}
+
+/* Package Hero */
+.package-hero-image {
+    height: 400px;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.package-hero-image img {
+    transition: transform 0.5s ease;
+}
+
+.package-hero-image:hover img {
+    transform: scale(1.05);
+}
+
+.package-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+/* Meta Section */
+.package-meta {
+    font-size: 1.1rem;
+}
+
+.package-price-card {
+    background: #f8f9fa;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.package-price-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-light);
+}
+
+/* Tab Navigation */
+.nav-tabs {
+    border-bottom: 2px solid #eee;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #666;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--primary-color);
+    border: none;
+    background: transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    border: none;
+    border-bottom: 3px solid var(--primary-color);
+    background: transparent;
+}
+
+/* Highlights & Services */
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+/* Booking Card */
+.sticky-top {
+    z-index: 100;
+    transition: top 0.3s ease;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-dark) !important;
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--gradient-1);
+    /* Generic gradient, assumes base.css vars */
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--gradient-2);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Reviews */
+.review-card {
+    border-left: 4px solid var(--primary-color);
+}
+
+.review-avatar {
+    width: 50px;
+    height: 50px;
+    background: #eee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-weight: bold;
+}
+
+/* Related Packages */
+.related-package-img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .package-hero-image {
+        height: 300px;
+        margin-bottom: 2rem;
+    }
+
+    .display-4 {
+        font-size: 2.5rem;
+    }
+}
