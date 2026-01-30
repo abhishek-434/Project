@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q, Avg
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Destination, TourPackage, Booking, Review, Contact, Newsletter
+from .models import Destination, TourPackage, Booking, Review, Contact, Newsletter, GalleryImage
 from .forms import BookingForm, ReviewForm, ContactForm, NewsletterForm
 import json
 
@@ -223,4 +223,12 @@ def search(request):
         'destinations': destinations,
         'packages': packages,
     }
+
     return render(request, 'travel_app/search_results.html', context)
+
+def gallery(request):
+    images = GalleryImage.objects.all()
+    context = {
+        'images': images
+    }
+    return render(request, 'travel_app/gallery.html', context)

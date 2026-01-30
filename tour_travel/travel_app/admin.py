@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Destination, TourPackage, Booking, Review, Contact, Newsletter
+from .models import Destination, TourPackage, Booking, Review, Contact, Newsletter, GalleryImage
+
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+    list_display = ['caption', 'tourist_name', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['caption', 'tourist_name']
+
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):

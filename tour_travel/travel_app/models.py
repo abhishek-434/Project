@@ -93,3 +93,15 @@ class Newsletter(models.Model):
     
     def __str__(self):
         return self.email
+
+class GalleryImage(models.Model):
+    image = models.ImageField(upload_to='gallery/', help_text="Upload a happy tourist image")
+    caption = models.CharField(max_length=200, help_text="E.g., Travel Place Name")
+    tourist_name = models.CharField(max_length=100, blank=True, help_text="Optional: Name of the tourist")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.caption} - {self.tourist_name or 'Anonymous'}"

@@ -34,9 +34,9 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
+            <a class="navbar-brand py-0" href="{% url 'home' %}">
                 <i class="fas fa-globe-americas me-2"></i>
-                <span class="brand-text">Wanderlust</span>
+                    <span class="brand-text">Wanderlust Explor the World</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -56,6 +56,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'gallery' %}">Gallery</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'contact' %}">Contact</a>
@@ -118,8 +121,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="footer-section">
                         <h5 class="footer-title">
-                            <i class="fas fa-globe-americas me-2"></i>
-                            Wanderlust Adventures
+                            Wanderlust Explore the World
                         </h5>
                         <p class="footer-text">Discover extraordinary destinations and create unforgettable memories
                             with our curated travel experiences around the globe.</p>
