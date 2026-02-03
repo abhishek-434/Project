@@ -1,130 +1,147 @@
 {% extends 'travel_app/base.html' %}
 {% load static %}
 
-{% block title %}Wanderlust Adventures - Discover Your Next Journey{% endblock %}
+{% block title %}Explore {{ destination.name }} - Wanderlust Adventures{% endblock %}
 
 {% block extra_css %}
 <link href="{% static 'css/destination_detail.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
+<div class="container py-5 mt-5">
+    <!-- Back Button -->
+    <a href="{% url 'destination' %}" class="btn btn-outline-secondary rounded-pill mb-4 border-2 fw-bold">
+        <i class="fas fa-arrow-left me-2"></i>Back to Destinations
+    </a>
 
-<div class="container">
-    <a href="{% url 'destination' %}" class="back-btn">← Back to Destinations</a>
-
-    <div class="row align-items-center mb-5 mt-4" data-aos="fade-up">
-        <div class="col-lg-6 mb-4 mb-lg-0">
-            <div class="destination-image-wrapper shadow-lg rounded-3 overflow-hidden">
+    <!-- Top Section: Image Left, About Right -->
+    <div class="row gx-lg-5 align-items-center mb-5 section-split">
+        <!-- Left: Image -->
+        <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+            <div class="destination-image-wrapper shadow-lg rounded-4 overflow-hidden position-relative">
                 {% if destination.image %}
                 <img src="{{ destination.image.url }}" alt="{{ destination.name }}"
-                    class="img-fluid w-100 h-100 object-fit-cover">
+                    class="img-fluid w-100 object-fit-cover" style="height: 500px;">
+                {% else %}
+                <div class="bg-gradient-gray d-flex align-items-center justify-content-center" style="height: 500px;">
+                    <i class="fas fa-image fa-4x text-white opacity-25"></i>
+                </div>
                 {% endif %}
+                <div class="overlay-gradient"></div>
             </div>
         </div>
-        <div class="col-lg-6 ps-lg-5">
-            <h1 class="display-4 fw-bold mb-3 text-gradient">{{ destination.name }}</h1>
 
-            {% if destination.country %}
-            <div class="h5 text-muted mb-4">
-                <i class="fas fa-map-marker-alt text-primary me-2"></i>{{ destination.country }}
-            </div>
-            {% endif %}
-
-            <div class="destination-description mb-4">
-                {% if destination.description %}
-                <p class="lead">{{ destination.description }}</p>
-                {% else %}
-                <p class="lead">Discover the beauty and wonder of {{ destination.name }}. This amazing destination
-                    offers unforgettable experiences and breathtaking sights that will create memories to last a
-                    lifetime.</p>
-                {% endif %}
+        <!-- Right: About & Booking -->
+        <div class="col-lg-6" data-aos="fade-left">
+            <div class="d-flex align-items-center mb-3">
+                <span
+                    class="badge bg-primary-soft text-primary rounded-pill px-3 py-2 text-uppercase letter-spacing-2 fw-bold me-3">Destination</span>
+                <span class="text-muted"><i class="fas fa-map-marker-alt me-2 text-warning"></i>{{ destination.country
+                    }}</span>
             </div>
 
-            <div class="destination-meta mb-4 p-3 bg-light rounded-3 border-start border-primary border-4">
-                {% if destination.best_time_to_visit %}
-                <div class="mb-2"><strong><i class="fas fa-calendar-alt text-primary me-2"></i>Best Time to
-                        Visit:</strong> {{ destination.best_time_to_visit }}</div>
-                {% endif %}
+            <h1 class="display-4 fw-bold mb-4 text-dark">{{ destination.name }}</h1>
 
-                {% if destination.popular_attractions %}
-                <div><strong><i class="fas fa-camera text-primary me-2"></i>Popular Attractions:</strong> {{
-                    destination.popular_attractions }}</div>
-                {% endif %}
+            <div class="about-content mb-4">
+                <p class="lead text-secondary lh-lg">
+                    {% if destination.description %}
+                    {{ destination.description }}
+                    {% else %}
+                    Discover the hidden gems of {{ destination.name }}. An unforgettable journey awaits you in this
+                    breathtaking location.
+                    {% endif %}
+                </p>
             </div>
 
-            <a href="#available-packages" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
-                <i class="fas fa-suitcase me-2"></i>Book Now
-            </a>
+            <!-- Book Now Button -->
+            <div class="mt-5">
+                <a href="#available-packages"
+                    class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg btn-hover-lift w-100 w-md-auto">
+                    <i class="fas fa-calendar-check me-2"></i>Book Now
+                </a>
+            </div>
         </div>
     </div>
 
-    <div id="available-packages" class="packages-section pt-5 border-top">
-        <div class="section-header text-center mb-5">
-            <h2 class="section-title">Available Tour Packages</h2>
-            <div class="title-underline mx-auto"></div>
+    <hr class="my-5 border-secondary opacity-10">
+
+    <!-- Bottom: Available Packages (Horizontal Layout) -->
+    <div id="available-packages" class="packages-section pt-4">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold mb-2">Available Packages</h2>
+            <p class="text-muted">Choose the perfect itinerary for your trip</p>
+            <div class="divider mx-auto bg-primary mt-3"></div>
         </div>
 
         {% if packages %}
-        <div class="packages-grid">
+        <div class="package-list">
             {% for package in packages %}
-            <div class="package-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="package-name">{{ package.name }}</div>
+            <div class="card mb-5 border-0 shadow-hover rounded-4 overflow-hidden group-hover" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="row g-0">
+                    <!-- Package Image (Left) -->
+                    <div class="col-md-5 col-xl-4 position-relative">
+                        {% if package.image %}
+                        <img src="{{ package.image.url }}" alt="{{ package.title }}"
+                            class="img-fluid h-100 w-100 object-fit-cover transition-scale" style="min-height: 300px;">
+                        {% else %}
+                        <div class="bg-secondary h-100 w-100 d-flex align-items-center justify-content-center"
+                            style="min-height: 300px;">
+                            <i class="fas fa-cube fa-3x text-white opacity-50"></i>
+                        </div>
+                        {% endif %}
 
-                {% if package.description %}
-                <div class="package-description">{{ package.description }}</div>
-                {% endif %}
-
-                <div class="package-details">
-                    {% if package.duration %}
-                    <div class="detail-item">
-                        <span class="detail-label">Duration:</span>
-                        <span class="detail-value">{{ package.duration }} days</span>
+                        <div class="position-absolute top-0 start-0 p-3">
+                            <span class="badge bg-white text-dark shadow-sm backdrop-blur fw-bold">
+                                {{ package.get_difficulty_display }}
+                            </span>
+                        </div>
                     </div>
-                    {% endif %}
 
-                    {% if package.group_size %}
-                    <div class="detail-item">
-                        <span class="detail-label">Group Size:</span>
-                        <span class="detail-value">{{ package.group_size }} people</span>
-                    </div>
-                    {% endif %}
+                    <!-- Package Details (Right) -->
+                    <div class="col-md-7 col-xl-8">
+                        <div class="card-body p-4 p-lg-5 d-flex flex-column h-100">
+                            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start mb-3">
+                                <h3 class="h3 fw-bold text-dark mb-2 mb-lg-0">{{ package.title }}</h3>
+                                <div class="text-primary fw-bolder h4 mb-0">₹{{ package.price|floatformat:0 }}</div>
+                            </div>
 
-                    {% if package.difficulty_level %}
-                    <div class="detail-item">
-                        <span class="detail-label">Difficulty:</span>
-                        <span class="detail-value">{{ package.difficulty_level }}</span>
-                    </div>
-                    {% endif %}
+                            <div class="feature-badges mb-3">
+                                <span class="badge bg-light text-muted me-2"><i class="far fa-clock me-1"></i> {{
+                                    package.duration_days }} Days</span>
+                                <span class="badge bg-light text-muted me-2"><i class="fas fa-user-friends me-1"></i>
+                                    Max {{ package.max_people }}</span>
+                            </div>
 
-                    {% if package.includes %}
-                    <div class="detail-item">
-                        <span class="detail-label">Includes:</span>
-                        <span class="detail-value">{{ package.includes }}</span>
+                            <p class="card-text text-secondary mb-4 flex-grow-1">
+                                {{ package.description }}
+                            </p>
+
+                            <div class="d-flex align-items-center flex-wrap gap-3 mt-auto">
+                                <a href="{% url 'package_detail' package.pk %}"
+                                    class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm btn-hover-lift">
+                                    View Details
+                                </a>
+                                <div class="text-muted small ms-auto d-none d-lg-block">
+                                    <i class="fas fa-calendar-alt me-1"></i> Available from {{
+                                    package.available_from|date:"M d, Y" }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {% endif %}
                 </div>
-
-                {% if package.price %}
-                <div class="package-price">₹{{ package.price|floatformat:0 }}</div>
-                {% endif %}
-
-                <a href="{% url 'booking_page' package.id %}" class="book-btn">
-                    Book Now
-                </a>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <div class="no-packages">
-            <h3>No packages available yet</h3>
-            <p>We're working on creating amazing tour packages for {{ destination.name }}. Check back soon!</p>
+        <div class="text-center py-5 bg-light rounded-4">
+            <div class="mb-3 opacity-25">
+                <i class="fas fa-suitcase fa-4x text-secondary"></i>
+            </div>
+            <h3 class="h4 text-muted">No packages currently listed</h3>
+            <p class="text-secondary">We are crafting new experiences for {{ destination.name }}. Check back soon!</p>
         </div>
         {% endif %}
     </div>
 </div>
-
-{% endblock %}
-
-{% block extra_js %}
-
 {% endblock %}
