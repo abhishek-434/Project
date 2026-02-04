@@ -36,8 +36,6 @@
             <div class="d-flex align-items-center mb-3">
                 <span
                     class="badge bg-primary-soft text-primary rounded-pill px-3 py-2 text-uppercase letter-spacing-2 fw-bold me-3">Destination</span>
-                <span class="text-muted"><i class="fas fa-map-marker-alt me-2 text-warning"></i>{{ destination.country
-                    }}</span>
             </div>
 
             <h1 class="display-4 fw-bold mb-4 text-dark">{{ destination.name }}</h1>
@@ -107,8 +105,6 @@
                             </div>
 
                             <div class="feature-badges mb-3">
-                                <span class="badge bg-light text-muted me-2"><i class="far fa-clock me-1"></i> {{
-                                    package.duration_days }} Days</span>
                                 <span class="badge bg-light text-muted me-2"><i class="fas fa-user-friends me-1"></i>
                                     Max {{ package.max_people }}</span>
                             </div>
@@ -122,10 +118,6 @@
                                     class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm btn-hover-lift">
                                     View Details
                                 </a>
-                                <div class="text-muted small ms-auto d-none d-lg-block">
-                                    <i class="fas fa-calendar-alt me-1"></i> Available from {{
-                                    package.available_from|date:"M d, Y" }}
-                                </div>
                             </div>
                         </div>
                     </div>
