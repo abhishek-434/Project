@@ -1,0 +1,100 @@
+/* Decorative Elements & Animations */
+
+/* Floating Animation */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.floating-element {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Section Dividers - Waves */
+.wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.wave-divider svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 100px;
+}
+
+.wave-divider .shape-fill {
+    fill: #ffffff;
+}
+
+/* Travel Postmark Stamp */
+.postmark-stamp {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 80px;
+    height: 80px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23ccc' stroke-width='2' stroke-dasharray='5,5'/%3E%3Ctext x='50' y='55' font-family='Arial' font-size='14' text-anchor='middle' fill='%23ccc' transform='rotate(-15 50 50)'%3EVISITED%3C/text%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Travel Badge */
+.travel-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: #ffc107;
+    color: #333;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Decorative Icons */
+.deco-icon {
+    font-size: 2rem;
+    color: var(--primary-color, #00bcd4);
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.deco-icon:hover {
+    transform: scale(1.1) rotate(10deg);
+}
+
+/* Card Hover effect extension */
+.hover-lift-lg {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift-lg:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Gradient Text Override */
+.text-gradient {
+    background: linear-gradient(45deg, #00bcd4, #003366);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
