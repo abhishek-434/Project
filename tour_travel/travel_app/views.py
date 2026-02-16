@@ -232,3 +232,4 @@ def gallery(request):
         'images': images
     }
     return render(request, 'travel_app/gallery.html', context)
+

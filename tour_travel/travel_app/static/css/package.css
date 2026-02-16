@@ -43,7 +43,10 @@ img {
     position: relative;
     overflow: hidden;
     padding: 120px 0;
-    background: linear-gradient(to right, #667eea, #764ba2);
+    /* background: linear-gradient(to right, #667eea, #764ba2); */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
     color: #fff;
     text-align: center;
 }
@@ -943,7 +946,7 @@ img {
 
 /* Outline Button */
 .cta-buttons .btn-outline-light {
-   
+
     color: #ffffff;
     background: transparent;
 }
