@@ -4,8 +4,10 @@ from django.core.paginator import Paginator
 from django.db.models import Q, Avg
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from .models import Destination, TourPackage, Booking, Review, Contact, Newsletter, GalleryImage
-from .forms import BookingForm, ReviewForm, ContactForm, NewsletterForm
+from .forms import BookingForm, ReviewForm, ContactForm, NewsletterForm, UserRegistrationForm
 import json
 
 def home(request):
@@ -232,4 +234,41 @@ def gallery(request):
         'images': images
     }
     return render(request, 'travel_app/gallery.html', context)
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Registration successful. Welcome!')
+            return redirect('dashboard')
+    else:
+        form = UserRegistrationForm()
+    
+    context = {'form': form}
+    return render(request, 'travel_app/register.html', context)
+
+@login_required
+def dashboard(request):
+    bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
+    
+    context = {
+        'bookings': bookings
+    }
+    return render(request, 'travel_app/dashboard.html', context)
+
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    
+    if request.method == 'POST':
+        if booking.status == 'pending':
+            booking.status = 'cancelled'
+            booking.save()
+            messages.success(request, 'Booking has been successfully cancelled.')
+        else:
+            messages.error(request, 'Only pending bookings can be cancelled.')
+            
+    return redirect('dashboard')
 
