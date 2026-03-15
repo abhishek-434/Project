@@ -4,10 +4,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q, Avg
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
 from .models import Destination, TourPackage, Booking, Review, Contact, Newsletter, GalleryImage
-from .forms import BookingForm, ReviewForm, ContactForm, NewsletterForm, UserRegistrationForm
+from .forms import BookingForm, ReviewForm, ContactForm, NewsletterForm
 import json
 
 def home(request):
@@ -24,22 +22,12 @@ def home(request):
 
 def destinations(request):
     destinations_list = Destination.objects.all()
-    search_query = request.GET.get('search')
-    
-    if search_query:
-        destinations_list = destinations_list.filter(
-            Q(name__icontains=search_query) | 
-            Q(country__icontains=search_query) |
-            Q(description__icontains=search_query)
-        )
-    
     paginator = Paginator(destinations_list, 9)
     page_number = request.GET.get('page')
     destinations = paginator.get_page(page_number)
     
     context = {
         'destinations': destinations,
-        'search_query': search_query,
     }
     return render(request, 'travel_app/destinations.html', context)
 
@@ -55,37 +43,12 @@ def destination_detail(request, pk):
 
 def packages(request):
     packages_list = TourPackage.objects.all()
-    search_query = request.GET.get('search')
-    difficulty = request.GET.get('difficulty')
-    min_price = request.GET.get('min_price')
-    max_price = request.GET.get('max_price')
-    
-    if search_query:
-        packages_list = packages_list.filter(
-            Q(title__icontains=search_query) |
-            Q(description__icontains=search_query) |
-            Q(destination__name__icontains=search_query)
-        )
-    
-    if difficulty:
-        packages_list = packages_list.filter(difficulty=difficulty)
-    
-    if min_price:
-        packages_list = packages_list.filter(price__gte=min_price)
-    
-    if max_price:
-        packages_list = packages_list.filter(price__lte=max_price)
-    
     paginator = Paginator(packages_list, 9)
     page_number = request.GET.get('page')
     packages = paginator.get_page(page_number)
     
     context = {
         'packages': packages,
-        'search_query': search_query,
-        'difficulty': difficulty,
-        'min_price': min_price,
-        'max_price': max_price,
     }
     return render(request, 'travel_app/packages.html', context)
 
@@ -103,8 +66,6 @@ def package_detail(request, pk):
             if review_form.is_valid():
                 review = review_form.save(commit=False)
                 review.package = package
-                if request.user.is_authenticated:
-                    review.user = request.user
                 review.save()
                 messages.success(request, 'Review added successfully!')
                 return redirect('package_detail', pk=pk)
@@ -113,8 +74,6 @@ def package_detail(request, pk):
             if booking_form.is_valid():
                 booking = booking_form.save(commit=False)
                 booking.package = package
-                if request.user.is_authenticated:
-                    booking.user = request.user
                 booking.total_amount = package.price * booking.number_of_people
                 booking.save()
                 messages.success(request, 'Booking request submitted successfully!')
@@ -135,13 +94,6 @@ def package_detail(request, pk):
 
 def booking_success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
-    
-    # Security check: ensure the user owns this booking if it's associated with a user
-    if booking.user and booking.user != request.user:
-        # If the user is logged in but tries to access another user's booking, or if not logged in
-        from django.core.exceptions import PermissionDenied
-        raise PermissionDenied
-        
     context = {'booking': booking}
     return render(request, 'travel_app/booking_success.html', context)
 
@@ -153,20 +105,12 @@ def booking_page(request, package_id):
         if form.is_valid():
             booking = form.save(commit=False)
             booking.package = package
-            if request.user.is_authenticated:
-                booking.user = request.user
             booking.total_amount = package.price * booking.number_of_people
             booking.save()
             messages.success(request, 'Booking submitted successfully!')
             return redirect('booking_success', booking_id=booking.id)
     else:
-        initial_data = {}
-        if request.user.is_authenticated:
-            initial_data = {
-                'full_name': f"{request.user.first_name} {request.user.last_name}".strip(),
-                'email': request.user.email
-            }
-        form = BookingForm(initial=initial_data)
+        form = BookingForm()
         
     context = {
         'package': package,
@@ -208,67 +152,10 @@ def newsletter_signup(request):
         
     return JsonResponse({'success': False, 'message': 'Invalid email!'})
 
-def search(request):
-    query = request.GET.get('q', '')
-    destinations = Destination.objects.filter(
-        Q(name__icontains=query) | Q(country__icontains=query)
-    ) if query else []
-    
-    packages = TourPackage.objects.filter(
-        Q(title__icontains=query) | 
-        Q(description__icontains=query) |
-        Q(destination__name__icontains=query)
-    ) if query else []
-    
-    context = {
-        'query': query,
-        'destinations': destinations,
-        'packages': packages,
-    }
-
-    return render(request, 'travel_app/search_results.html', context)
-
 def gallery(request):
     images = GalleryImage.objects.all()
     context = {
         'images': images
     }
     return render(request, 'travel_app/gallery.html', context)
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Registration successful. Welcome!')
-            return redirect('dashboard')
-    else:
-        form = UserRegistrationForm()
-    
-    context = {'form': form}
-    return render(request, 'travel_app/register.html', context)
-
-@login_required
-def dashboard(request):
-    bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
-    
-    context = {
-        'bookings': bookings
-    }
-    return render(request, 'travel_app/dashboard.html', context)
-
-@login_required
-def cancel_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
-    
-    if request.method == 'POST':
-        if booking.status == 'pending':
-            booking.status = 'cancelled'
-            booking.save()
-            messages.success(request, 'Booking has been successfully cancelled.')
-        else:
-            messages.error(request, 'Only pending bookings can be cancelled.')
-            
-    return redirect('dashboard')
 

@@ -36,45 +36,7 @@
     </div>
 </section>
 
-<!-- Filter Section -->
-<section class="filter-section">
-    <div class="container">
-        <div class="filter-card">
-            <form method="GET" class="filter-form">
-                <div class="row g-3">
-                    <div class="col-lg-4 col-md-6">
-                        <label class="form-label">Search Packages</label>
-                        <div class="search-wrapper">
-                            <i class="fas fa-search search-icon"></i>
-                            <input type="text" class="form-control" name="search" value="{{ search_query }}"
-                                placeholder="Search packages...">
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <label class="form-label">Min Price (₹)</label>
-                        <input type="number" class="form-control" name="min_price" value="{{ min_price }}"
-                            placeholder="0" min="0">
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <label class="form-label">Max Price (₹)</label>
-                        <input type="number" class="form-control" name="max_price" value="{{ max_price }}"
-                            placeholder="10000" min="0">
-                    </div>
-                    <div class="col-lg-2 col-md-12">
-                        <div class="filter-buttons">
-                            <button type="submit" class="btn btn-primary w-100 mb-2">
-                                <i class="fas fa-filter me-2"></i>Filter
-                            </button>
-                            <a href="{% url 'packages' %}" class="btn btn-outline-secondary w-100">
-                                <i class="fas fa-times me-2"></i>Clear
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
+
 
 <!-- Travel Insurance Banner -->
 <section class="insurance-banner bg-warning py-3">
@@ -135,26 +97,7 @@
 <!-- Packages Grid -->
 <section class="packages-grid py-5">
     <div class="container">
-        {% if search_query or difficulty or min_price or max_price %}
-        <div class="filter-results-header mb-4">
-            <h3 class="results-title">Filter Results</h3>
-            <div class="active-filters">
-                {% if search_query %}
-                <span class="filter-tag">Search: "{{ search_query }}"</span>
-                {% endif %}
-                {% if difficulty %}
-                <span class="filter-tag">Difficulty: {{ difficulty|title }}</span>
-                {% endif %}
-                {% if min_price %}
-                <span class="filter-tag">Min: ₹{{ min_price }}</span>
-                {% endif %}
-                {% if max_price %}
-                <span class="filter-tag">Max: ₹{{ max_price }}</span>
-                {% endif %}
-            </div>
-            <p class="results-count">{{ packages|length }} package{{ packages|length|pluralize }} found</p>
-        </div>
-        {% endif %}
+
 
         <div class="row g-4" id="packagesGrid">
             {% for package in packages %}
@@ -239,25 +182,8 @@
                     <div class="no-packages-icon">
                         <i class="fas fa-suitcase-rolling"></i>
                     </div>
-                    <h3 class="no-packages-title">
-                        {% if search_query or difficulty or min_price or max_price %}
-                        No packages match your criteria
-                        {% else %}
-                        No packages available
-                        {% endif %}
-                    </h3>
-                    <p class="no-packages-text">
-                        {% if search_query or difficulty or min_price or max_price %}
-                        Try adjusting your filters or browse all packages
-                        {% else %}
-                        Check back soon for exciting new travel packages!
-                        {% endif %}
-                    </p>
-                    {% if search_query or difficulty or min_price or max_price %}
-                    <a href="{% url 'packages' %}" class="btn btn-primary">
-                        <i class="fas fa-globe me-2"></i>View All Packages
-                    </a>
-                    {% endif %}
+                    <h3 class="no-packages-title">No packages available</h3>
+                    <p class="no-packages-text">Check back soon for exciting new travel packages!</p>
                 </div>
             </div>
             {% endfor %}
@@ -270,46 +196,39 @@
                 <ul class="pagination justify-content-center">
                     {% if packages.has_previous %}
                     <li class="page-item">
-                        <a class="page-link"
-                            href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                        <a class="page-link" href="?page=1">
                             <i class="fas fa-angle-double-left"></i>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link"
-                            href="?page={{ packages.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                        <a class="page-link" href="?page={{ packages.previous_page_number }}">
                             <i class="fas fa-angle-left"></i>
                         </a>
                     </li>
                     {% endif %}
 
                     {% for num in packages.paginator.page_range %}
-                    {% if packages.number == num %}
-                    <li class="page-item active">
-                        <span class="page-link">{{ num }}</span>
-                    </li>
-                    {% elif num > packages.number|add:'-3' and num < packages.number|add:'3' %} <li class="page-item">
-                        <a class="page-link"
-                            href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">{{
-                            num }}</a>
-                        </li>
+                        {% if packages.number == num %}
+                            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > packages.number|add:'-3' and num < packages.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
                         {% endif %}
-                        {% endfor %}
+                    {% endfor %}
 
-                        {% if packages.has_next %}
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="?page={{ packages.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
-                                <i class="fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="?page={{ packages.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty %}&difficulty={{ difficulty }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
-                                <i class="fas fa-angle-double-right"></i>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if packages.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ packages.next_page_number }}">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ packages.paginator.num_pages }}">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
@@ -317,74 +236,7 @@
     </div>
 </section>
 
-<!-- Package Categories -->
-{% if not search_query and not difficulty and not min_price and not max_price %}
-<section class="package-categories py-5 bg-light">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-lg-8 mx-auto text-center">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="title-accent">Package</span> Categories
-                    </h2>
-                    <p class="section-subtitle">Find the perfect adventure for your travel style</p>
-                </div>
-            </div>
-        </div>
 
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="category-card adventure-category">
-                    <div class="category-icon">
-                        <i class="fas fa-mountain"></i>
-                    </div>
-                    <h4 class="category-title">Adventure Tours</h4>
-                    <p class="category-description">Thrilling expeditions for adrenaline seekers</p>
-                    <div class="category-stats">
-                        <span class="stat">15+ Packages</span>
-                        <span class="stat">From ₹299</span>
-                    </div>
-                    <a href="?difficulty=challenging" class="category-link">
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="category-card cultural-category">
-                    <div class="category-icon">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <h4 class="category-title">Cultural Experiences</h4>
-                    <p class="category-description">Immerse yourself in local traditions</p>
-                    <div class="category-stats">
-                        <span class="stat">12+ Packages</span>
-                        <span class="stat">From ₹199</span>
-                    </div>
-                    <a href="?difficulty=easy" class="category-link">
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="category-card luxury-category">
-                    <div class="category-icon">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <h4 class="category-title">Luxury Escapes</h4>
-                    <p class="category-description">Premium experiences for discerning travelers</p>
-                    <div class="category-stats">
-                        <span class="stat">8+ Packages</span>
-                        <span class="stat">From ₹899</span>
-                    </div>
-                    <a href="?min_price=800" class="category-link">
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
 
 <!-- Why Choose Our Packages -->
 <section class="why-choose-packages py-5">
