@@ -34,7 +34,7 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
     
     def get_success_url(self):
-        messages.success(self.request, f"Welcome back, {self.request.user.first_name|default:self.request.user.username}!")
+        messages.success(self.request, f"Welcome back, {self.request.user.first_name or self.request.user.username}!")
         return reverse_lazy('dashboard:profile')
 
 

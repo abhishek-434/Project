@@ -24,6 +24,7 @@ class Destination(models.Model):
     attractions = models.TextField(help_text="Key tourist attractions (comma-separated or HTML/markdown)")
     best_time_to_visit = models.CharField(max_length=150, help_text="E.g., October to April")
     weather_info = models.CharField(max_length=200, help_text="E.g., 20°C - 30°C Average")
+    featured = models.BooleanField(default=False, help_text="Show this destination on the home page spotlight")
     nearby_destinations = models.ManyToManyField('self', blank=True, symmetrical=True)
 
     def __str__(self):

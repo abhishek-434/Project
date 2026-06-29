@@ -25,7 +25,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'best_time_to_visit', 'weather_info')
+    list_display = ('name', 'slug', 'best_time_to_visit', 'weather_info', 'featured')
+    list_filter = ('featured',)
+    list_editable = ('featured',)
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name', 'attractions')
 

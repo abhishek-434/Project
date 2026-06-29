@@ -131,34 +131,36 @@ def seed():
     print("-> 4 Categories seeded.")
 
     # 6. Destinations
-    print("\nAdding destinations...")
     Destination.objects.all().delete()
     dest_bali = Destination.objects.create(
         name="Bali, Indonesia",
         slug="bali",
-        hero_image=get_mock_image("bali.jpg"),
+        hero_image="destinations/bali.jpg",
         description="A tropical paradise renowned for its volcanic forested mountains, iconic rice paddies, beaches, and coral reefs.",
         attractions="Ubud Sanctuary, Uluwatu Temple, Nusa Penida Cliffs",
         best_time_to_visit="April to October",
-        weather_info="26°C - 31°C average tropical climate"
+        weather_info="26°C - 31°C average tropical climate",
+        featured=True
     )
     dest_swiss = Destination.objects.create(
         name="Swiss Alps, Switzerland",
         slug="swiss-alps",
-        hero_image=get_mock_image("swiss.jpg"),
+        hero_image="destinations/swiss.jpg",
         description="A breathtaking landscape of snow-draped alpine summits, glacial lakes, and cozy timber ski lodges.",
         attractions="Zermatt Matterhorn, Interlaken Lakes, Glacier Express",
         best_time_to_visit="December to April",
-        weather_info="-5°C - 8°C alpine conditions"
+        weather_info="-5°C - 8°C alpine conditions",
+        featured=True
     )
     dest_kenya = Destination.objects.create(
         name="Masai Mara, Kenya",
         slug="masai-mara",
-        hero_image=get_mock_image("kenya.jpg"),
+        hero_image="destinations/kenya.jpg",
         description="An expansive savannah wilderness home to spectacular lions, leopards, cheetahs, and the Great Migration.",
         attractions="Mara River Crossing, Wildebeest Trails, Balloon Safari",
         best_time_to_visit="July to October",
-        weather_info="15°C - 28°C dry savannah winds"
+        weather_info="15°C - 28°C dry savannah winds",
+        featured=True
     )
     
     # Establish symmetrical nearby destinations
@@ -175,7 +177,7 @@ def seed():
         slug="bali-lagoon-escape",
         destination=dest_bali,
         category=cat_luxury,
-        cover_image=get_mock_image("pkg_bali.jpg"),
+        cover_image="packages/pkg_bali.jpg",
         price=4500.00,
         discount_price=3990.00,
         duration_days=8,
@@ -216,7 +218,7 @@ def seed():
         slug="matterhorn-ski-adventure",
         destination=dest_swiss,
         category=cat_adventure,
-        cover_image=get_mock_image("pkg_swiss.jpg"),
+        cover_image="packages/pkg_swiss.jpg",
         price=6200.00,
         duration_days=6,
         duration_nights=5,
@@ -249,7 +251,7 @@ def seed():
         slug="masai-mara-safari",
         destination=dest_kenya,
         category=cat_nature,
-        cover_image=get_mock_image("pkg_kenya.jpg"),
+        cover_image="packages/pkg_kenya.jpg",
         price=5400.00,
         discount_price=4950.00,
         duration_days=7,
@@ -290,7 +292,7 @@ def seed():
         slug="ultimate-safari-packing-guide",
         author=admin_user,
         category=cat_guide,
-        cover_image=get_mock_image("blog_safari.jpg"),
+        cover_image="blog/blog_safari.jpg",
         content="Packing for a luxury safari requires balancing safety, rules, and style. In the savannah, bright colors are avoided to prevent distracting wildlife. We recommend neutral tones (khaki, olive green, sand).\n\nAdditionally, most light bush flights restrict baggage weight to 15kg in soft duffel bags. In this guide, we outline the essential tech gear, footwear, and lenses you need to make the most of your wild expedition.",
         excerpt="What to pack in a soft-sided duffel for luxury bush flight transfers and private safari walks.",
         featured=True,
@@ -301,7 +303,7 @@ def seed():
         slug="secrets-booking-luxury-budget",
         author=traveler_user,
         category=cat_tips,
-        cover_image=get_mock_image("blog_budget.jpg"),
+        cover_image="blog/blog_budget.jpg",
         content="Luxury travel does not always require high spending. By utilizing flash sales, shoulder season scheduling, and premium card points multipliers, you can access 5-star properties for a fraction of the cost.\n\nOur travel curators share their insider tips on how to request hotel room upgrades, bypass concierge costs, and check into boutique resorts without breaking your bank accounts.",
         excerpt="Tips from our travel curators on scheduling shoulder seasons, using card perks, and room upgrades.",
         featured=False,
@@ -312,9 +314,9 @@ def seed():
     # 9. Gallery Images
     print("\nAdding gallery images...")
     GalleryImage.objects.all().delete()
-    GalleryImage.objects.create(image=get_mock_image("g_1.jpg"), caption="Snorkeling in Bali's Crystal Bay", tourist_name="Charlotte", location="Nusa Penida, Bali")
-    GalleryImage.objects.create(image=get_mock_image("g_2.jpg"), caption="Skiing down Zermatt peak", tourist_name="Ethan", location="Zermatt, Switzerland")
-    GalleryImage.objects.create(image=get_mock_image("g_3.jpg"), caption="Giraffe breakfast encounter", tourist_name="Victoria", location="Nairobi, Kenya")
+    GalleryImage.objects.create(image="gallery/g_1.jpg", caption="Snorkeling in Bali's Crystal Bay", tourist_name="Charlotte", location="Nusa Penida, Bali")
+    GalleryImage.objects.create(image="gallery/g_2.jpg", caption="Skiing down Zermatt peak", tourist_name="Ethan", location="Zermatt, Switzerland")
+    GalleryImage.objects.create(image="gallery/g_3.jpg", caption="Giraffe breakfast encounter", tourist_name="Victoria", location="Nairobi, Kenya")
     print("-> 3 Gallery images seeded.")
 
     print("\n--------------------------------------------------")
