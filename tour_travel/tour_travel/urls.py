@@ -21,7 +21,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('travel_app.urls')),
+    path('', include('core.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('tours/', include('tours.urls')),
+    path('bookings/', include('bookings.urls')),
+    path('blog/', include('blog.urls')),
+    path('contact/', include('contact.urls')),
+    path('dashboard/', include('dashboard.urls')),
 ]
 
 if settings.DEBUG:

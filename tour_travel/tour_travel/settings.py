@@ -38,7 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'travel_app',
+    
+    # New apps
+    'core',
+    'accounts',
+    'tours',
+    'bookings',
+    'blog',
+    'contact',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
