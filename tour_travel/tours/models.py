@@ -117,6 +117,12 @@ class TourItinerary(models.Model):
         ordering = ['day_number']
         unique_together = ('package', 'day_number')
 
+    @property
+    def activities_list(self):
+        if self.activities:
+            return [a.strip() for a in self.activities.split(',') if a.strip()]
+        return []
+
     def __str__(self):
         return f"Day {self.day_number}: {self.title} ({self.package.title})"
 

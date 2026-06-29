@@ -180,12 +180,10 @@
                             <p class="text-secondary small mb-2">{{ day.description }}</p>
                             
                             <!-- Highlight Activities if any -->
-                            {% if day.activities %}
+                            {% if day.activities_list %}
                                 <div class="d-flex flex-wrap gap-2 mt-2">
-                                    {% for act in day.activities.split|join:" "|split:"," %}
-                                        {% if act.strip %}
-                                            <span class="badge bg-secondary bg-opacity-25 text-gold font-body px-2 py-1 rounded small">{{ act.strip }}</span>
-                                        {% endif %}
+                                    {% for act in day.activities_list %}
+                                        <span class="badge bg-secondary bg-opacity-25 text-gold font-body px-2 py-1 rounded small">{{ act }}</span>
                                     {% endfor %}
                                 </div>
                             {% endif %}
